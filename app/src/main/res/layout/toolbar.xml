@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v7.widget.Toolbar xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/tool_bar"
+    android:layout_width="match_parent"
+    android:layout_height="56dp"
+    android:background="@color/colorPrimary"
+    android:gravity="center_horizontal"
+    android:theme="@style/ThemeOverlay.AppCompat.Dark">
+
+    <com.binaa.android.binaa.views.TextViewRobotoLight
+        android:id="@+id/title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:textColor="@color/white"
+        android:textSize="21sp" />
+
+
+</android.support.v7.widget.Toolbar>

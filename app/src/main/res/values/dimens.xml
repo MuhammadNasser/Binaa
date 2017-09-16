@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="textSizeXSmall">13sp</dimen>
+    <dimen name="textSizeSmall">15sp</dimen>
+    <dimen name="textSizeNormal">17sp</dimen>
+    <dimen name="textSizeLarge">19sp</dimen>
+
+    <dimen name="menu_item_pading">20dp</dimen>
+    <dimen name="navigation_drawer_width">250dp</dimen>
+    <dimen name="pager_circle_radius">10dp</dimen>
+    <dimen name="profileTabItemHeight">50dp</dimen>
+</resources>

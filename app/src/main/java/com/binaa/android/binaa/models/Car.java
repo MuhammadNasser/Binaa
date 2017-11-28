@@ -26,6 +26,7 @@ public class Car implements Parcelable {
             return new Car[size];
         }
     };
+
     private String id;
     private String description;
     private ArrayList<Image> images = new ArrayList<>();

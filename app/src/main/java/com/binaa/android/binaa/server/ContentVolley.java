@@ -4,6 +4,7 @@ import android.content.Context;
 
 import com.android.volley.Request;
 import com.binaa.android.binaa.models.Car;
+import com.binaa.android.binaa.models.Contact;
 import com.binaa.android.binaa.models.Property;
 import com.binaa.android.binaa.models.Service;
 
@@ -47,6 +48,16 @@ public abstract class ContentVolley extends BaseVolley {
         requestAction(Request.Method.POST, url + "services", false);
     }
 
+    public void getContacts() {
+        actionType = ActionType.getContacts;
+        requestAction(Request.Method.POST, url + "contact", false);
+    }
+
+    public void getAbout() {
+        actionType = ActionType.about;
+        requestAction(Request.Method.POST, url + "about", false);
+    }
+
     public void getPropertyDetails(String id) {
         params = new HashMap<>();
         params.put("id", id);
@@ -79,6 +90,33 @@ public abstract class ContentVolley extends BaseVolley {
         requestAction(Request.Method.POST, url + "service/show", false);
     }
 
+    public void search(String type, String minPrice, String maxPrice, String bedrooms) {
+        params = new HashMap<>();
+        params.put("type", type);
+        params.put("min_price", minPrice);
+        params.put("max_price", maxPrice);
+        params.put("number_of_bedrooms", bedrooms);
+
+        actionType = ActionType.search;
+        requestAction(Request.Method.POST, url + "search", false);
+    }
+
+    public void getRelatedApartments(String id) {
+        params = new HashMap<>();
+        params.put("id", id);
+
+        actionType = ActionType.GetRelatedApartment;
+        requestAction(Request.Method.POST, url + "related/apartments", false);
+    }
+
+    public void getRelatedHotels(String id) {
+        params = new HashMap<>();
+        params.put("id", id);
+
+        actionType = ActionType.GetRelatedHotels;
+        requestAction(Request.Method.POST, url + "related/hotels", false);
+    }
+
     @Override
     protected void onPreExecute(BaseVolley.ActionType actionType) {
         ActionType action = (ActionType) actionType;
@@ -91,7 +129,7 @@ public abstract class ContentVolley extends BaseVolley {
     protected void getResponseParameters(String response) throws JSONException {
 
         JSONObject jsonObject = new JSONObject(response);
-        JSONArray dataArray = null;
+        JSONArray dataArray;
         JSONObject dataObject;
 
         String message = jsonObject.optString("error", null);
@@ -105,6 +143,9 @@ public abstract class ContentVolley extends BaseVolley {
         switch (action) {
             case GetApartments:
             case GetHotels:
+            case GetRelatedApartment:
+            case GetRelatedHotels:
+            case search:
                 ArrayList<Property> properties = new ArrayList<>();
                 dataArray = jsonObject.optJSONArray("data");
                 for (int i = 0; i < dataArray.length(); i++) {
@@ -155,6 +196,18 @@ public abstract class ContentVolley extends BaseVolley {
                 Service service = new Service(dataObject);
                 onPostExecuteGetServiceDetails(action, success, message, service);
                 break;
+            case getContacts:
+                dataObject = jsonObject.getJSONObject("data");
+
+                Contact contact = new Contact(dataObject);
+                onPostExecuteGetContacts(action, success, message, contact);
+                break;
+            case about:
+                dataObject = jsonObject.getJSONObject("data");
+                String about = dataObject.getString("about");
+
+                onPostExecuteAbout(action, success, message, about);
+                break;
         }
     }
 
@@ -166,6 +219,9 @@ public abstract class ContentVolley extends BaseVolley {
         switch (action) {
             case GetApartments:
             case GetHotels:
+            case GetRelatedApartment:
+            case GetRelatedHotels:
+            case search:
                 onPostExecuteGetProperties(action, false, message, null);
                 break;
             case GetPropertyDetails:
@@ -184,6 +240,12 @@ public abstract class ContentVolley extends BaseVolley {
             case GetServiceDetails:
                 onPostExecuteGetServiceDetails(action, false, message, null);
                 break;
+            case getContacts:
+                onPostExecuteGetContacts(action, false, message, null);
+                break;
+            case about:
+                onPostExecuteAbout(action, success, message, null);
+                break;
         }
     }
 
@@ -196,6 +258,12 @@ public abstract class ContentVolley extends BaseVolley {
     protected void onPostExecuteGetServiceDetails(ActionType actionType, boolean success, String message, Service service) {
     }
 
+    protected void onPostExecuteGetContacts(ActionType actionType, boolean success, String message, Contact contact) {
+    }
+
+    protected void onPostExecuteAbout(ActionType actionType, boolean success, String message, String about) {
+    }
+
     protected void onPostExecuteGetProperties(ActionType actionType, boolean success, String message, ArrayList<Property> properties) {
     }
 
@@ -206,6 +274,8 @@ public abstract class ContentVolley extends BaseVolley {
     }
 
     public enum ActionType implements BaseVolley.ActionType {
-        GetApartments, GetPropertyDetails, GetHotels, GetHotelDetails, GetCars, GetCarDetails, GetServices, GetServiceDetails
+        GetApartments, GetPropertyDetails, GetHotels, GetHotelDetails,
+        GetCars, GetCarDetails, GetServices, GetServiceDetails, GetRelatedApartment,
+        GetRelatedHotels, search, getContacts, about
     }
 }

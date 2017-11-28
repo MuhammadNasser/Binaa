@@ -27,11 +27,9 @@ import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 
-import butterknife.BindView;
-import butterknife.ButterKnife;
-
-import static com.binaa.android.binaa.DetailsActivity.IS_PROPERTY;
+import static com.binaa.android.binaa.DetailsActivity.IS_HOTEL;
 import static com.binaa.android.binaa.DetailsActivity.ITEM_TYPE;
+import static com.binaa.android.binaa.DetailsActivity.PROPERTY;
 
 
 /**
@@ -42,9 +40,8 @@ public class PropertiesFragment extends Fragment {
 
     final static String BUNDLE_RECYCLER_LAYOUT = "propertiesfragment.recycler.layout";
 
-    final int LOADER_ID = 1;
     private final String TAG = PropertiesFragment.class.getSimpleName();
-    @BindView(R.id.recycler)
+
     RecyclerView recyclerView;
     Parcelable savedRecyclerLayoutState;
     private MainActivity activity;
@@ -56,7 +53,7 @@ public class PropertiesFragment extends Fragment {
 
         activity = (MainActivity) getActivity();
 
-        ButterKnife.bind(this, view);
+        recyclerView = view.findViewById(R.id.recycler);
 
         StaggeredGridLayoutManager layoutManager = new StaggeredGridLayoutManager(1, StaggeredGridLayoutManager.VERTICAL);
         layoutManager.setGapStrategy(StaggeredGridLayoutManager.GAP_HANDLING_MOVE_ITEMS_BETWEEN_SPANS);
@@ -135,15 +132,9 @@ public class PropertiesFragment extends Fragment {
 
         public class ItemHolder extends RecyclerView.ViewHolder {
 
-            @BindView(R.id.imageViewCover)
             ImageView imageViewCover;
-            @BindView(R.id.textViewPrice)
             TextView textViewPrice;
-            @BindView(R.id.textViewCode)
             TextView textViewCode;
-            @BindView(R.id.textViewTitle)
-            TextView textViewTitle;
-            @BindView(R.id.textViewDescription)
             TextView textViewDescription;
 
             Property property;
@@ -151,13 +142,17 @@ public class PropertiesFragment extends Fragment {
             public ItemHolder(View itemView) {
                 super(itemView);
 
-                ButterKnife.bind(this, itemView);
+                imageViewCover = itemView.findViewById(R.id.imageViewCover);
+                textViewPrice = itemView.findViewById(R.id.textViewPrice);
+                textViewCode = itemView.findViewById(R.id.textViewCode);
+                textViewDescription = itemView.findViewById(R.id.textViewDescription);
 
                 itemView.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
                         Intent intent = new Intent(activity, DetailsActivity.class);
-                        intent.putExtra(IS_PROPERTY, property);
+                        intent.putExtra(PROPERTY, property);
+                        intent.putExtra(IS_HOTEL, false);
                         intent.putExtra(ITEM_TYPE, DetailsActivity.DetailsType.Properties);
                         startActivity(intent);
                     }
@@ -175,9 +170,8 @@ public class PropertiesFragment extends Fragment {
                 } else {
                     imageViewCover.setImageResource(R.drawable.ic_warning);
                 }
-                textViewPrice.setText(property.getPrice() + " " + getResources().getString(R.string.egp));
-                textViewCode.setText(getResources().getString(R.string.property_code) + " " + property.getCode());
-                textViewTitle.setText(property.getTitle());
+                textViewPrice.setText(String.format("%s - %s %s", property.getPrice(), property.getPriceMonth(), getResources().getString(R.string.egp)));
+                textViewCode.setText(String.format("%s %s", getResources().getString(R.string.property_code), property.getCode()));
 
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
                     textViewDescription.setText(Html.fromHtml(property.getDescription(), Html.FROM_HTML_OPTION_USE_CSS_COLORS));

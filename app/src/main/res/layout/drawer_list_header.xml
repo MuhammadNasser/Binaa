@@ -23,7 +23,6 @@
         android:src="@drawable/binaa_logo" />
 
     <com.binaa.android.binaa.views.TextViewRobotoBold
-        android:id="@+id/textViewProfileName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerVertical="true"

@@ -15,6 +15,7 @@ import java.util.ArrayList;
 
 public class Property implements Parcelable {
 
+
     public static final Creator<Property> CREATOR = new Creator<Property>() {
         @Override
         public Property createFromParcel(Parcel in) {
@@ -26,6 +27,7 @@ public class Property implements Parcelable {
             return new Property[size];
         }
     };
+
     private String id;
     private String title;
     private String code;
@@ -33,7 +35,12 @@ public class Property implements Parcelable {
     private String facebook;
     private String twitter;
     private String instagram;
+    private String views;
+    private String area;
+    private String bedrooms;
+    private String bathrooms;
     private String price;
+    private String priceMonth;
     private String phoneNumber;
     private ArrayList<Image> imagesLinks = new ArrayList<>();
 
@@ -46,7 +53,12 @@ public class Property implements Parcelable {
         this.twitter = jsonObject.optString("twitter");
         this.instagram = jsonObject.optString("instagram");
         this.price = jsonObject.optString("price");
+        this.priceMonth = jsonObject.optString("price_per_month");
         this.phoneNumber = jsonObject.optString("phone_number");
+        this.views = jsonObject.optString("count_views");
+        this.area = jsonObject.optString("area");
+        this.bedrooms = jsonObject.optString("number_of_bedrooms");
+        this.bathrooms = jsonObject.optString("number_of_bathrooms");
 
         JSONArray images = jsonObject.getJSONArray("images");
         for (int i = 0; i < images.length(); i++) {
@@ -67,7 +79,12 @@ public class Property implements Parcelable {
         facebook = in.readString();
         twitter = in.readString();
         instagram = in.readString();
+        views = in.readString();
+        area = in.readString();
+        bedrooms = in.readString();
+        bathrooms = in.readString();
         price = in.readString();
+        priceMonth = in.readString();
         phoneNumber = in.readString();
         imagesLinks = in.createTypedArrayList(Image.CREATOR);
     }
@@ -104,6 +121,10 @@ public class Property implements Parcelable {
         return price;
     }
 
+    public String getPriceMonth() {
+        return priceMonth;
+    }
+
     public String getPhoneNumber() {
         return phoneNumber;
     }
@@ -112,22 +133,43 @@ public class Property implements Parcelable {
         return imagesLinks;
     }
 
+    public String getViews() {
+        return views;
+    }
+
+    public String getArea() {
+        return area;
+    }
+
+    public String getBedrooms() {
+        return bedrooms;
+    }
+
+    public String getBathrooms() {
+        return bathrooms;
+    }
+
     @Override
     public int describeContents() {
         return 0;
     }
 
     @Override
-    public void writeToParcel(Parcel parcel, int i) {
-        parcel.writeString(id);
-        parcel.writeString(title);
-        parcel.writeString(code);
-        parcel.writeString(description);
-        parcel.writeString(facebook);
-        parcel.writeString(twitter);
-        parcel.writeString(instagram);
-        parcel.writeString(price);
-        parcel.writeString(phoneNumber);
-        parcel.writeTypedList(imagesLinks);
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(id);
+        dest.writeString(title);
+        dest.writeString(code);
+        dest.writeString(description);
+        dest.writeString(facebook);
+        dest.writeString(twitter);
+        dest.writeString(instagram);
+        dest.writeString(views);
+        dest.writeString(area);
+        dest.writeString(bedrooms);
+        dest.writeString(bathrooms);
+        dest.writeString(price);
+        dest.writeString(priceMonth);
+        dest.writeString(phoneNumber);
+        dest.writeTypedList(imagesLinks);
     }
 }

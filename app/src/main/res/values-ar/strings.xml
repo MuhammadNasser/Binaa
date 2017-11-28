@@ -1,0 +1,66 @@
+<resources>
+
+    <string name="app_name">Binaa \n (حجز شقق و فنادق و سيارات القاهره)</string>
+    <!-- Default screen margins, per the Android Design guidelines. -->
+
+    <string name="number">000000</string>
+    <string name="description">3 Bedrooms (1 master), 3 bathrooms, kitchen, lounge, salon, (60 m2) terrace with garden, Central airconditioner </string>
+    <string name="facebook_link">facebook link</string>
+    <string name="twitter_link">twitter link</string>
+    <string name="instagram_link">instagram link</string>
+    <string name="property_code">كود: </string>
+    <string name="price">1000000 EGP</string>
+    <string name="for_more_info">لمزيد من المعلومات: </string>
+    <string name="or">أو</string>
+    <string name="call_customer_service">إتصل بخدمة العملاء</string>
+    <string name="address_">العنوان: </string>
+    <string name="phone_">التليفون: </string>
+    <string name="who_we_are">من نحن؟</string>
+    <string name="app_icon">app_icon</string>
+    <string name="egp"> EGP</string>
+    <string name="save_icon">Save Icon</string>
+    <string name="slogan">حجز شقق و فنادق و سيارات القاهره</string>
+    <string name="related">ذات صلة:</string>
+    <string name="en">En</string>
+    <string name="ar">ar</string>
+    <string name="details">التفاصيل</string>
+    <string name="area">المساحة: </string>
+    <string name="bedrooms">الغرف: </string>
+    <string name="bathrooms">الحمامات: </string>
+    <string name="number_of_bedrooms">عدد الغرف</string>
+
+    <string name="m_">م²</string>
+    <string name="min_price">أقل سعر</string>
+    <string name="max_price">أكبر سعر</string>
+    <string name="search">بحث</string>
+    <string name="no_result">لا يوجد نتائج لهذه البيانات</string>
+    <string name="coming_soon">قريبا…</string>
+    <string name="apartments">الشقق</string>
+
+    <string-array name="slideMenuItems">
+        <item>الرئيسية</item>
+        <item>الخدمات</item>
+        <item>من نحن</item>
+        <item>اتصل بنا</item>
+    </string-array>
+
+    <string-array name="home_tabs_text">
+        <item>الشقق</item>
+        <item>السيارات</item>
+        <item>الفنادق</item>
+    </string-array>
+
+    <string-array name="home_tabs_icons_white">
+        <item>@drawable/ic_properties</item>
+        <item>@drawable/ic_cars</item>
+        <item>@drawable/ic_hotels</item>
+    </string-array>
+
+    <string-array name="home_tabs_icons_gray">
+        <item>@drawable/ic_properties_gray</item>
+        <item>@drawable/ic_cars_gray</item>
+        <item>@drawable/ic_hotels_gray</item>
+    </string-array>
+</resources>
+
+

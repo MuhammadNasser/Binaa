@@ -1,5 +1,8 @@
 package com.binaa.android.binaa;
 
+import android.annotation.SuppressLint;
+import android.content.Context;
+import android.content.Intent;
 import android.content.res.Configuration;
 import android.content.res.TypedArray;
 import android.graphics.drawable.Drawable;
@@ -15,6 +18,7 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.Html;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.RelativeLayout;
@@ -27,20 +31,28 @@ import com.binaa.android.binaa.fragments.HotelsFragment;
 import com.binaa.android.binaa.fragments.NavigationDrawerFragment;
 import com.binaa.android.binaa.fragments.PropertiesFragment;
 import com.binaa.android.binaa.fragments.ServicesFragment;
+import com.binaa.android.binaa.server.Constants;
+import com.binaa.android.binaa.utils.ApplicationBase;
+import com.binaa.android.binaa.utils.MyContextWrapper;
 import com.google.firebase.analytics.FirebaseAnalytics;
 
 import java.util.Locale;
 
+import static com.binaa.android.binaa.FilterActivity.TYPE;
+import static com.binaa.android.binaa.FilterActivity.apartments;
+import static com.binaa.android.binaa.FilterActivity.hotels;
 
-public class MainActivity extends AppCompatActivity implements TabLayout.OnTabSelectedListener, NavigationDrawerFragment.NavigationDrawerCallbacks {
+
+public class MainActivity extends AppCompatActivity implements TabLayout.OnTabSelectedListener, NavigationDrawerFragment.NavigationDrawerCallbacks, View.OnClickListener {
 
     public DrawerLayout drawerLayout;
     Fragment currentFragment;
+    private int currentFragmentIndex;
     private NavigationDrawerFragment mNavigationDrawerFragment;
     private TabLayout tabLayout;
-    private int currentFragmentIndex;
-    private TextView textViewTitle;
+    private TextView textViewTitle, textViewLanguage;
     private RelativeLayout relativeLayoutLoading;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,10 +69,9 @@ public class MainActivity extends AppCompatActivity implements TabLayout.OnTabSe
         }
         setContentView(R.layout.activity_main);
         setToolBar();
-        setLocale();
 
-        tabLayout = (TabLayout) findViewById(R.id.tabs);
-        relativeLayoutLoading = (RelativeLayout) findViewById(R.id.relativeLayoutLoading);
+        tabLayout = findViewById(R.id.tabs);
+        relativeLayoutLoading = findViewById(R.id.relativeLayoutLoading);
 
         addTabs();
 
@@ -107,14 +118,21 @@ public class MainActivity extends AppCompatActivity implements TabLayout.OnTabSe
     public void onTabReselected(TabLayout.Tab tab) {
     }
 
+    @SuppressLint("CutPasteId")
     private void setToolBar() {
 
-        Toolbar toolBar = (Toolbar) findViewById(R.id.toolbar);
+        Toolbar toolBar = findViewById(R.id.toolbar);
         View actionBarView = getLayoutInflater().inflate(R.layout.toolbar_customview, toolBar, false);
 
         setSupportActionBar(toolBar);
+        //noinspection ConstantConditions
         getSupportActionBar().setTitle("");
-        textViewTitle = (TextView) actionBarView.findViewById(R.id.textViewActivityTitle);
+        textViewTitle = actionBarView.findViewById(R.id.textViewActivityTitle);
+        textViewLanguage = actionBarView.findViewById(R.id.textViewLanguage);
+
+        textViewLanguage.setText(Constants.isArabic() ? R.string.en : R.string.ar);
+        textViewLanguage.setVisibility(View.VISIBLE);
+        textViewLanguage.setOnClickListener(this);
 
         mNavigationDrawerFragment = (NavigationDrawerFragment) getSupportFragmentManager().findFragmentById(R.id.navigation_drawer);
 
@@ -129,7 +147,7 @@ public class MainActivity extends AppCompatActivity implements TabLayout.OnTabSe
         }
 
         // Set up the drawer.
-        drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
+        drawerLayout = findViewById(R.id.drawer_layout);
         mNavigationDrawerFragment.setUp(R.id.navigation_drawer, drawerLayout);
     }
 
@@ -189,6 +207,16 @@ public class MainActivity extends AppCompatActivity implements TabLayout.OnTabSe
         return states;
     }
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.home_menu, menu);
+        if (currentFragment instanceof HotelsFragment || currentFragment instanceof PropertiesFragment) {
+            return super.onCreateOptionsMenu(menu);
+        } else {
+            return false;
+        }
+    }
+
     private Drawable getFromDrawables(int resId) {
         Drawable drawable;
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
@@ -222,20 +250,17 @@ public class MainActivity extends AppCompatActivity implements TabLayout.OnTabSe
                 break;
             case -1:
                 fragment = new PropertiesFragment();
-                fragmentTitle = tabsText[0];
+                fragmentTitle = getResources().getString(R.string.apartments);
                 break;
             case 0:
                 fragment = new PropertiesFragment();
                 tabLayout.setVisibility(View.VISIBLE);
-
-                fragmentTitle = slideMenuItems[position];
+                fragmentTitle = getResources().getString(R.string.apartments);
                 break;
             case 1:
                 fragment = new PropertiesFragment();
                 tabLayout.setVisibility(View.VISIBLE);
-
-
-                fragmentTitle = slideMenuItems[position - 1];
+                fragmentTitle = getResources().getString(R.string.apartments);
                 break;
             case 2:
                 fragment = new ServicesFragment();
@@ -270,40 +295,41 @@ public class MainActivity extends AppCompatActivity implements TabLayout.OnTabSe
 
 
     public boolean onOptionsItemSelected(MenuItem item) {
-        //noinspection SimplifiableIfStatement
-        if (mNavigationDrawerFragment.mDrawerLayout.isDrawerOpen(GravityCompat.START)) {
-            mNavigationDrawerFragment.mDrawerLayout.closeDrawer(GravityCompat.START);
-        } else {
-            mNavigationDrawerFragment.mDrawerLayout.openDrawer(GravityCompat.START);
+        switch (item.getItemId()) {
+            case R.id.filter_menu_item:
+                Intent intent = new Intent(MainActivity.this, FilterActivity.class);
+                if (currentFragment instanceof PropertiesFragment) {
+                    intent.putExtra(TYPE, apartments);
+                    startActivity(intent);
+                } else if (currentFragment instanceof HotelsFragment) {
+                    intent.putExtra(TYPE, hotels);
+                    startActivity(intent);
+                }
+                break;
+            default:
+                //noinspection SimplifiableIfStatement
+                if (mNavigationDrawerFragment.mDrawerLayout.isDrawerOpen(GravityCompat.START)) {
+                    mNavigationDrawerFragment.mDrawerLayout.closeDrawer(GravityCompat.START);
+                } else {
+                    mNavigationDrawerFragment.mDrawerLayout.openDrawer(GravityCompat.START);
+                }
+                break;
         }
         return true;
     }
 
     @Override
+    protected void attachBaseContext(Context newBase) {
+        Locale languageType = ApplicationBase.getInstance().getLocale();
+        super.attachBaseContext(MyContextWrapper.wrap(newBase, languageType));
+    }
+
+    @Override
     public void onBackPressed() {
-        if (currentFragmentIndex == 0) {
+        if (currentFragment instanceof PropertiesFragment) {
             super.onBackPressed();
         } else {
             replaceFragment(0);
-        }
-    }
-
-    public void setLocale() {
-        Configuration config = getBaseContext().getResources().getConfiguration();
-        Locale local = new Locale("ar");
-        Locale.setDefault(local);
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
-            config.setLocale(local);
-        } else {
-            // noinspection deprecation
-            config.locale = local;
-        }
-
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
-            getBaseContext().createConfigurationContext(config);
-        } else {
-            // noinspection deprecation
-            getBaseContext().getResources().updateConfiguration(config, getBaseContext().getResources().getDisplayMetrics());
         }
     }
 
@@ -313,4 +339,18 @@ public class MainActivity extends AppCompatActivity implements TabLayout.OnTabSe
     }
 
 
+    @Override
+    public void onClick(View v) {
+        if (v == textViewLanguage) {
+            if (Constants.isArabic()) {
+                textViewLanguage.setText(R.string.en);
+                ApplicationBase.getInstance().setLocale(Constants.ENGLISH);
+                finish();
+            } else {
+                textViewLanguage.setText(R.string.ar);
+                ApplicationBase.getInstance().setLocale(Constants.ARABIC);
+                finish();
+            }
+        }
+    }
 }

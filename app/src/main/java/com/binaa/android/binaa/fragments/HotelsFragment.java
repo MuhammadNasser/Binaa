@@ -15,6 +15,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -27,11 +28,9 @@ import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 
-import butterknife.BindView;
-import butterknife.ButterKnife;
-
-import static com.binaa.android.binaa.DetailsActivity.IS_PROPERTY;
+import static com.binaa.android.binaa.DetailsActivity.IS_HOTEL;
 import static com.binaa.android.binaa.DetailsActivity.ITEM_TYPE;
+import static com.binaa.android.binaa.DetailsActivity.PROPERTY;
 
 /**
  * Created by Muhammad on 7/29/2017
@@ -41,8 +40,9 @@ public class HotelsFragment extends Fragment {
 
     final static String BUNDLE_RECYCLER_LAYOUT = "hotelsfragment.recycler.layout";
     private final String TAG = HotelsFragment.class.getSimpleName();
-    @BindView(R.id.recycler)
+
     RecyclerView recyclerView;
+    RelativeLayout relativeLayoutComingSoon;
     Parcelable savedRecyclerLayoutState;
     private MainActivity activity;
 
@@ -53,7 +53,8 @@ public class HotelsFragment extends Fragment {
 
         activity = (MainActivity) getActivity();
 
-        ButterKnife.bind(this, view);
+        recyclerView = view.findViewById(R.id.recycler);
+        relativeLayoutComingSoon = view.findViewById(R.id.relativeLayoutComingSoon);
 
         StaggeredGridLayoutManager layoutManager = new StaggeredGridLayoutManager(1, StaggeredGridLayoutManager.VERTICAL);
         layoutManager.setGapStrategy(StaggeredGridLayoutManager.GAP_HANDLING_MOVE_ITEMS_BETWEEN_SPANS);
@@ -132,15 +133,9 @@ public class HotelsFragment extends Fragment {
 
         public class ItemHolder extends RecyclerView.ViewHolder {
 
-            @BindView(R.id.imageViewCover)
             ImageView imageViewCover;
-            @BindView(R.id.textViewPrice)
             TextView textViewPrice;
-            @BindView(R.id.textViewCode)
             TextView textViewCode;
-            @BindView(R.id.textViewTitle)
-            TextView textViewTitle;
-            @BindView(R.id.textViewDescription)
             TextView textViewDescription;
 
             Property property;
@@ -148,13 +143,17 @@ public class HotelsFragment extends Fragment {
             public ItemHolder(View itemView) {
                 super(itemView);
 
-                ButterKnife.bind(this, itemView);
+                imageViewCover = itemView.findViewById(R.id.imageViewCover);
+                textViewPrice = itemView.findViewById(R.id.textViewPrice);
+                textViewCode = itemView.findViewById(R.id.textViewCode);
+                textViewDescription = itemView.findViewById(R.id.textViewDescription);
 
                 itemView.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
                         Intent intent = new Intent(activity, DetailsActivity.class);
-                        intent.putExtra(IS_PROPERTY, property);
+                        intent.putExtra(PROPERTY, property);
+                        intent.putExtra(IS_HOTEL, true);
                         intent.putExtra(ITEM_TYPE, DetailsActivity.DetailsType.Properties);
                         startActivity(intent);
                     }
@@ -173,9 +172,8 @@ public class HotelsFragment extends Fragment {
                     imageViewCover.setImageResource(R.drawable.ic_warning);
                 }
 
-                textViewPrice.setText(property.getPrice() + " " + getResources().getString(R.string.egp));
-                textViewCode.setText(getResources().getString(R.string.property_code) + " " + property.getCode());
-                textViewTitle.setText(property.getTitle());
+                textViewPrice.setText(String.format("%s - %s %s", property.getPrice(), property.getPriceMonth(), getResources().getString(R.string.egp)));
+                textViewCode.setText(String.format("%s %s", getResources().getString(R.string.property_code), property.getCode()));
 
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
                     textViewDescription.setText(Html.fromHtml(property.getDescription(), Html.FROM_HTML_OPTION_USE_CSS_COLORS));
@@ -203,7 +201,12 @@ public class HotelsFragment extends Fragment {
         protected void onPostExecuteGetProperties(ActionType actionType, boolean success, String message, ArrayList<Property> properties) {
             activity.isLoading(false);
             if (success) {
-                recyclerView.setAdapter(new HotelsFragment.HotelsAdapter(activity, properties));
+                if (properties.size() != 0) {
+                    recyclerView.setAdapter(new HotelsAdapter(activity, properties));
+                } else {
+                    relativeLayoutComingSoon.setVisibility(View.VISIBLE);
+                    recyclerView.setVisibility(View.GONE);
+                }
             } else {
                 Toast.makeText(activity, message, Toast.LENGTH_SHORT).show();
             }

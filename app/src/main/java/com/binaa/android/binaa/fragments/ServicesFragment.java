@@ -25,11 +25,8 @@ import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 
-import butterknife.BindView;
-import butterknife.ButterKnife;
-
-import static com.binaa.android.binaa.DetailsActivity.IS_SERVICE;
 import static com.binaa.android.binaa.DetailsActivity.ITEM_TYPE;
+import static com.binaa.android.binaa.DetailsActivity.SERVICE;
 
 /**
  * Created by Muhammad on 7/29/2017
@@ -38,7 +35,7 @@ import static com.binaa.android.binaa.DetailsActivity.ITEM_TYPE;
 public class ServicesFragment extends Fragment {
 
     private final String TAG = ServicesFragment.class.getSimpleName();
-    @BindView(R.id.recycler)
+
     RecyclerView recyclerView;
     private MainActivity activity;
 
@@ -49,7 +46,7 @@ public class ServicesFragment extends Fragment {
 
         activity = (MainActivity) getActivity();
 
-        ButterKnife.bind(this, view);
+        recyclerView = view.findViewById(R.id.recycler);
 
         Content content = new Content();
         content.getServices();
@@ -102,15 +99,9 @@ public class ServicesFragment extends Fragment {
 
         public class ItemHolder extends RecyclerView.ViewHolder {
 
-            @BindView(R.id.imageViewCover)
             ImageView imageViewCover;
-            @BindView(R.id.textViewPrice)
             TextView textViewPrice;
-            @BindView(R.id.textViewCode)
             TextView textViewCode;
-            @BindView(R.id.textViewTitle)
-            TextView textViewTitle;
-            @BindView(R.id.textViewDescription)
             TextView textViewDescription;
 
             Service service;
@@ -118,13 +109,16 @@ public class ServicesFragment extends Fragment {
             public ItemHolder(View itemView) {
                 super(itemView);
 
-                ButterKnife.bind(this, itemView);
+                imageViewCover = itemView.findViewById(R.id.imageViewCover);
+                textViewPrice = itemView.findViewById(R.id.textViewPrice);
+                textViewCode = itemView.findViewById(R.id.textViewCode);
+                textViewDescription = itemView.findViewById(R.id.textViewDescription);
 
                 itemView.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
                         Intent intent = new Intent(activity, DetailsActivity.class);
-                        intent.putExtra(IS_SERVICE, service);
+                        intent.putExtra(SERVICE, service);
                         intent.putExtra(ITEM_TYPE, DetailsActivity.DetailsType.Services);
                         startActivity(intent);
                     }
@@ -142,8 +136,6 @@ public class ServicesFragment extends Fragment {
                 } else {
                     imageViewCover.setImageResource(R.drawable.ic_warning);
                 }
-
-                textViewTitle.setText(service.getTitle());
                 textViewPrice.setVisibility(View.GONE);
                 textViewCode.setVisibility(View.GONE);
 

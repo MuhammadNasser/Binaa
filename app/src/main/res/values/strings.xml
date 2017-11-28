@@ -3,42 +3,50 @@
     <string name="app_name">Binaa \n (حجز شقق و فنادق و سيارات القاهره)</string>
     <!-- Default screen margins, per the Android Design guidelines. -->
 
-    <string name="navigation_drawer_open">Open navigation drawer</string>
-    <string name="navigation_drawer_close">Close navigation drawer</string>
     <string name="number">000000</string>
     <string name="description">3 Bedrooms (1 master), 3 bathrooms, kitchen, lounge, salon, (60 m2) terrace with garden, Central airconditioner </string>
-    <string name="title">Title</string>
     <string name="facebook_link">facebook link</string>
     <string name="twitter_link">twitter link</string>
     <string name="instagram_link">instagram link</string>
-    <string name="property_code">كود: </string>
+    <string name="property_code">Code: </string>
     <string name="price">1000000 EGP</string>
-    <string name="for_more_info">لمزيد من المعلومات: </string>
-    <string name="or">أو</string>
-    <string name="call_customer_service">إتصل بخدمة العملاء</string>
-    <string name="address_">العنوان: </string>
-    <string name="phone_">التليفون: </string>
-    <string name="email_">البريد الالكتروني: </string>
-    <string name="who_we_are">من نحن؟</string>
-    <string name="our_mission">خططنا</string>
+    <string name="for_more_info">For more information: </string>
+    <string name="or">Or</string>
+    <string name="call_customer_service">Call customers service</string>
+    <string name="address_">Address: </string>
+    <string name="phone_">Phone: </string>
+    <string name="who_we_are">Who are we?</string>
     <string name="app_icon">app_icon</string>
-    <string name="egp">EGP</string>
+    <string name="egp"> EGP</string>
     <string name="save_icon">Save Icon</string>
-    <string name="content_authority">com.binaa.android.binaa </string>
-    <string name="internet_connection">برجاء الاتصال بشبكة الانتر نت</string>
-    <string name="slogan">حجز شقق و فنادق و سيارات القاهره</string>
+    <string name="slogan">Booking apartments, hotels and cars Cairo</string>
+    <string name="related">Related: </string>
+    <string name="en">En</string>
+    <string name="ar">ar</string>
+    <string name="details">Details</string>
+    <string name="area">area: </string>
+    <string name="bedrooms">bedrooms: </string>
+    <string name="number_of_bedrooms">Number of Bedrooms</string>
+    <string name="bathrooms">bathrooms: </string>
+    <string name="m_">m²</string>
+    <string name="min_price">Minimum Price</string>
+    <string name="max_price">Maxmum Price</string>
+    <string name="search">Search</string>
+    <string name="no_result">No results for this data</string>
+    <string name="coming_soon">Coming Soon…</string>
+    <string name="apartments">Apartments</string>
 
     <string-array name="slideMenuItems">
-        <item>الرئيسية</item>
-        <item>الخدمات</item>
-        <item>من نحن</item>
-        <item>اتصل بنا</item>
+        <item>Home</item>
+        <item>Services</item>
+        <item>About Us</item>
+        <item>Contact Us</item>
     </string-array>
 
     <string-array name="home_tabs_text">
-        <item>الشقق</item>
-        <item>السيارات</item>
-        <item>الفنادق</item>
+        <item>Apartments</item>
+        <item>Cars</item>
+        <item>Hotels</item>
     </string-array>
 
     <string-array name="home_tabs_icons_white">

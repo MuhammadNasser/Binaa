@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:tools="http://schemas.android.com/tools"
     android:background="@drawable/shape_shadow"
     android:tag="layout">
 
@@ -38,33 +38,18 @@
             android:padding="5dp">
 
             <com.binaa.android.binaa.views.TextViewRobotoRegular
-                android:id="@+id/textViewTitle"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentLeft="true"
-                android:layout_alignParentStart="true"
-                android:layout_alignParentTop="true"
-                android:ellipsize="end"
-                android:gravity="start|top"
-                android:maxLines="2"
-                android:textColor="@color/white"
-                android:textSize="@dimen/textSizeXSmall"
-                tools:text="@string/title"/>
-
-            <com.binaa.android.binaa.views.TextViewRobotoRegular
                 android:id="@+id/textViewDescription"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_alignParentLeft="true"
                 android:layout_alignParentStart="true"
-                android:layout_below="@+id/textViewTitle"
                 android:ellipsize="end"
                 android:gravity="start|top"
                 android:maxLines="2"
                 android:padding="5dp"
                 android:textColor="@color/white"
                 android:textSize="@dimen/textSizeXSmall"
-                tools:text="@string/description"/>
+                tools:text="@string/description" />
         </RelativeLayout>
     </RelativeLayout>
 </RelativeLayout>

@@ -27,10 +27,7 @@ import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 
-import butterknife.BindView;
-import butterknife.ButterKnife;
-
-import static com.binaa.android.binaa.DetailsActivity.IS_CAR;
+import static com.binaa.android.binaa.DetailsActivity.CAR;
 import static com.binaa.android.binaa.DetailsActivity.ITEM_TYPE;
 
 /**
@@ -43,7 +40,6 @@ public class CarsFragment extends Fragment {
 
     private final String TAG = CarsFragment.class.getSimpleName();
     Parcelable savedRecyclerLayoutState;
-    @BindView(R.id.recycler)
     RecyclerView recyclerView;
     private MainActivity activity;
 
@@ -53,8 +49,7 @@ public class CarsFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_cars, container, false);
 
         activity = (MainActivity) getActivity();
-
-        ButterKnife.bind(this, view);
+        recyclerView = view.findViewById(R.id.recycler);
 
         StaggeredGridLayoutManager layoutManager = new StaggeredGridLayoutManager(1, StaggeredGridLayoutManager.VERTICAL);
         layoutManager.setGapStrategy(StaggeredGridLayoutManager.GAP_HANDLING_MOVE_ITEMS_BETWEEN_SPANS);
@@ -134,24 +129,21 @@ public class CarsFragment extends Fragment {
 
         public class ItemHolder extends RecyclerView.ViewHolder {
 
-            @BindView(R.id.imageViewCover)
             ImageView imageViewCover;
-
-            @BindView(R.id.textViewDescription)
             TextView textViewDescription;
 
             Car car;
 
             public ItemHolder(View itemView) {
                 super(itemView);
-
-                ButterKnife.bind(this, itemView);
+                imageViewCover = itemView.findViewById(R.id.imageViewCover);
+                textViewDescription = itemView.findViewById(R.id.textViewDescription);
 
                 itemView.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
                         Intent intent = new Intent(activity, DetailsActivity.class);
-                        intent.putExtra(IS_CAR, car);
+                        intent.putExtra(CAR, car);
                         intent.putExtra(ITEM_TYPE, DetailsActivity.DetailsType.Cars);
                         startActivity(intent);
                     }

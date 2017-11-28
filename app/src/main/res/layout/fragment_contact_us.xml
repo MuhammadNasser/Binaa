@@ -58,7 +58,6 @@
             android:drawableLeft="@drawable/ic_phone_gray"
             android:drawablePadding="5dp"
             android:drawableStart="@drawable/ic_phone_gray"
-            android:lines="1"
             android:paddingLeft="10dp"
             android:paddingRight="10dp"
             android:text="@string/phone_"
@@ -73,22 +72,6 @@
             android:layout_marginTop="5dp"
             android:background="@color/gray" />
 
-        <com.binaa.android.binaa.views.TextViewRobotoLight
-            android:id="@+id/textViewEmail"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="10dp"
-            android:layout_marginRight="10dp"
-            android:layout_marginTop="10dp"
-            android:drawableLeft="@drawable/ic_email_gray_stroke"
-            android:drawablePadding="5dp"
-            android:drawableStart="@drawable/ic_email_gray_stroke"
-            android:lines="1"
-            android:paddingLeft="10dp"
-            android:paddingRight="10dp"
-            android:text="@string/email_"
-            android:textColor="@color/gray"
-            android:textSize="@dimen/textSizeNormal" />
     </LinearLayout>
 
     <LinearLayout

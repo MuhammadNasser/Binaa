@@ -4,6 +4,7 @@
     <dimen name="textSizeSmall">15sp</dimen>
     <dimen name="textSizeNormal">17sp</dimen>
     <dimen name="textSizeLarge">19sp</dimen>
+    <dimen name="textSizeXLarge">22sp</dimen>
 
     <dimen name="menu_item_pading">20dp</dimen>
     <dimen name="navigation_drawer_width">250dp</dimen>

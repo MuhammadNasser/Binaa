@@ -4,7 +4,10 @@ import java.util.Locale;
 
 public class Constants {
 
-    private static final String apiUrl = "http://restart-technology.com/binaa/public/api/";
+    private static final String apiUrl = "http://binaacompany.com/api/";
+
+    public static final String ENGLISH = "en";
+    public static final String ARABIC = "ar";
 
 
     public static String getApiUrl() {
@@ -14,10 +17,6 @@ public class Constants {
 
     public static boolean isArabic() {
         return Locale.getDefault().getISO3Language().toLowerCase().contains("ar");
-    }
-
-    public static boolean isEnglish() {
-        return Locale.getDefault().getISO3Language().toLowerCase().contains("en");
     }
 
 

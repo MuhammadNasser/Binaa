@@ -2,7 +2,8 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@color/grayLight">
 
     <include
         android:id="@+id/toolbar"
@@ -85,26 +86,91 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/viewPager"
-                android:layout_marginLeft="10dp"
-                android:layout_marginRight="10dp"
+                android:layout_marginEnd="10dp"
+                android:layout_marginStart="10dp"
                 android:layout_marginTop="20dp"
-                android:background="@color/white">
+                android:background="@color/white"
+                android:layoutDirection="ltr"
+                tools:targetApi="jelly_bean_mr1">
 
-
-                <com.binaa.android.binaa.views.TextViewRobotoRegular
-                    android:id="@+id/textViewTitle"
+                <RelativeLayout
+                    android:id="@+id/relativeLayoutDetails"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_alignParentLeft="true"
-                    android:layout_alignParentStart="true"
-                    android:layout_alignParentTop="true"
+                    android:layout_centerHorizontal="true"
                     android:layout_margin="10dp"
-                    android:ellipsize="end"
-                    android:gravity="start|top"
-                    android:maxLines="2"
-                    android:textColor="@color/grayDark"
-                    android:textSize="@dimen/textSizeLarge"
-                    tools:text="@string/title" />
+                    android:orientation="horizontal"
+                    android:visibility="gone">
+
+                    <RelativeLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentStart="true"
+                        android:layout_marginStart="20dp"
+                        tools:ignore="RelativeOverlap,RtlCompat">
+
+                        <ImageView
+                            android:id="@+id/imageViewArea"
+                            android:layout_width="30dp"
+                            android:layout_height="30dp"
+                            android:layout_centerHorizontal="true"
+                            android:src="@drawable/ic_area" />
+
+                        <com.binaa.android.binaa.views.TextViewRobotoLight
+                            android:id="@+id/textViewArea"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@+id/imageViewArea"
+                            android:layout_centerHorizontal="true"
+                            android:text="@string/area" />
+                    </RelativeLayout>
+
+                    <RelativeLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerHorizontal="true">
+
+                        <ImageView
+                            android:id="@+id/imageViewBedrooms"
+                            android:layout_width="30dp"
+                            android:layout_height="30dp"
+                            android:layout_centerHorizontal="true"
+                            android:src="@drawable/ic_bedrooms" />
+
+                        <com.binaa.android.binaa.views.TextViewRobotoLight
+                            android:id="@+id/textViewBedrooms"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@+id/imageViewBedrooms"
+                            android:layout_centerHorizontal="true"
+                            android:text="@string/bedrooms" />
+                    </RelativeLayout>
+
+                    <RelativeLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentEnd="true"
+                        android:layout_marginEnd="20dp"
+                        tools:ignore="RelativeOverlap,RtlCompat">
+
+                        <ImageView
+                            android:id="@+id/imageViewBathrooms"
+                            android:layout_width="30dp"
+                            android:layout_height="30dp"
+                            android:layout_centerHorizontal="true"
+                            android:src="@drawable/ic_bathrooms" />
+
+                        <com.binaa.android.binaa.views.TextViewRobotoLight
+                            android:id="@+id/textViewBathrooms"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@+id/imageViewBathrooms"
+                            android:layout_centerHorizontal="true"
+                            android:text="@string/bathrooms" />
+                    </RelativeLayout>
+
+
+                </RelativeLayout>
 
                 <com.binaa.android.binaa.views.TextViewRobotoLight
                     android:id="@+id/textViewDescription"
@@ -112,7 +178,7 @@
                     android:layout_height="wrap_content"
                     android:layout_alignParentLeft="true"
                     android:layout_alignParentStart="true"
-                    android:layout_below="@+id/textViewTitle"
+                    android:layout_below="@+id/relativeLayoutDetails"
                     android:layout_marginBottom="5dp"
                     android:layout_marginEnd="10dp"
                     android:layout_marginStart="10dp"
@@ -130,7 +196,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/relativeLayout1"
-                android:layout_marginBottom="20dp"
+                android:layout_marginBottom="10dp"
                 android:layout_marginLeft="10dp"
                 android:layout_marginRight="10dp"
                 android:layout_marginTop="20dp"
@@ -224,6 +290,40 @@
 
             </RelativeLayout>
 
+            <RelativeLayout
+                android:id="@+id/relativeLayoutRelated"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_below="@+id/relativeLayout2"
+                android:layout_margin="10dp"
+                android:background="@color/white"
+                android:visibility="gone">
+
+                <com.binaa.android.binaa.views.TextViewRobotoRegular
+                    android:id="@+id/textViewTitle3"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentLeft="true"
+                    android:layout_alignParentStart="true"
+                    android:layout_alignParentTop="true"
+                    android:layout_margin="10dp"
+                    android:ellipsize="end"
+                    android:gravity="start|top"
+                    android:maxLines="2"
+                    android:text="@string/related"
+                    android:textColor="@color/grayDark"
+                    android:textSize="@dimen/textSizeLarge" />
+
+                <android.support.v7.widget.RecyclerView
+                    android:id="@+id/recycler"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_below="@+id/textViewTitle3"
+                    android:layout_margin="5dp" />
+
+
+            </RelativeLayout>
+
 
         </RelativeLayout>
     </ScrollView>
@@ -235,6 +335,7 @@
         android:layout_centerInParent="true"
         android:background="@color/blackTransparent"
         android:clickable="true"
+        android:focusable="true"
         android:visibility="gone">
 
         <ProgressBar

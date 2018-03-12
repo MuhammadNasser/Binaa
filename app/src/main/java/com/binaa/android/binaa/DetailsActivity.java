@@ -6,6 +6,7 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.annotation.RequiresApi;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBar;
@@ -33,7 +34,9 @@ import com.binaa.android.binaa.models.Property;
 import com.binaa.android.binaa.models.Service;
 import com.binaa.android.binaa.server.ContentVolley;
 import com.binaa.android.binaa.utils.ApplicationBase;
+import com.binaa.android.binaa.utils.BaseDialogHolder;
 import com.binaa.android.binaa.utils.MyContextWrapper;
+import com.binaa.android.binaa.utils.PhonesDialogHolder;
 import com.binaa.android.binaa.views.PagerSlidingTabStrip;
 import com.google.firebase.analytics.FirebaseAnalytics;
 import com.squareup.picasso.Picasso;
@@ -48,14 +51,12 @@ import java.util.Locale;
 public class DetailsActivity extends AppCompatActivity {
 
     public static String ITEM_TYPE = "item_type";
-    public static String CAR = "car";
-    public static String PROPERTY = "property";
     public static String IS_HOTEL = "isHotel";
-    public static String SERVICE = "service";
+    public static String ID_KEY = "id";
 
 
     private final String TAG = this.toString();
-
+    boolean isHotel;
     private TextView textViewDescription;
     private TextView textViewPrice;
     private TextView textViewCode;
@@ -63,11 +64,9 @@ public class DetailsActivity extends AppCompatActivity {
     private TextView textViewArea;
     private TextView textViewBedrooms;
     private TextView textViewBathrooms;
-
     private ImageView imageViewFacebook;
     private ImageView imageViewTwitter;
     private ImageView imageViewInstagram;
-
     private Button buttonCall;
     private ViewPager viewPager;
     private RelativeLayout relativeLayoutLoading;
@@ -76,11 +75,8 @@ public class DetailsActivity extends AppCompatActivity {
     private LinearLayout LinearLayoutSocial;
     private RelativeLayout relativeLayoutDetails;
     private RecyclerView recycler;
-
     private DetailsType detailsType;
-    private Car car;
-    private Property property;
-    private Service service;
+    private int id;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -111,24 +107,13 @@ public class DetailsActivity extends AppCompatActivity {
         relativeLayoutDetails = findViewById(R.id.relativeLayoutDetails);
 
         detailsType = (DetailsType) getIntent().getSerializableExtra(ITEM_TYPE);
-        car = getIntent().getParcelableExtra(CAR);
-        property = getIntent().getParcelableExtra(PROPERTY);
-        service = getIntent().getParcelableExtra(SERVICE);
-        boolean isHotel = getIntent().getBooleanExtra(IS_HOTEL, false);
+        id = getIntent().getIntExtra(ID_KEY, 0);
+        isHotel = getIntent().getBooleanExtra(IS_HOTEL, false);
 
         initializeData();
 
         FirebaseAnalytics firebaseAnalytics = FirebaseAnalytics.getInstance(this);
         firebaseAnalytics.setAnalyticsCollectionEnabled(true);
-
-        if (detailsType == DetailsType.Properties) {
-            Content content = new Content();
-            if (isHotel) {
-                content.getRelatedHotels(property.getId());
-            } else {
-                content.getRelatedApartments(property.getId());
-            }
-        }
     }
 
     @Override
@@ -137,94 +122,21 @@ public class DetailsActivity extends AppCompatActivity {
         super.attachBaseContext(MyContextWrapper.wrap(newBase, languageType));
     }
 
-
     private void initializeData() {
+        Content content = new Content();
         switch (detailsType) {
             case Properties:
-                textViewPrice.setText(String.format("%s - %s %s", property.getPrice(), property.getPriceMonth(), getResources().getString(R.string.egp)));
-                textViewCode.setText(String.format("%s %s", getResources().getString(R.string.property_code), property.getCode()));
-                textViewArea.setText(String.format("%s%s%s", getString(R.string.area), property.getArea(), getString(R.string.m_)));
-                textViewBedrooms.setText(String.format("%s %s", getString(R.string.bedrooms), property.getBedrooms()));
-                textViewBathrooms.setText(String.format("%s %s", getString(R.string.bathrooms), property.getBathrooms()));
-                relativeLayoutDetails.setVisibility(View.VISIBLE);
-
-                imageViewInstagram.setOnClickListener(new Listeners(property.getInstagram()));
-                imageViewFacebook.setOnClickListener(new Listeners(property.getFacebook()));
-                imageViewTwitter.setOnClickListener(new Listeners(property.getTwitter()));
-
-                buttonCall.setOnClickListener(new Listeners(Integer.valueOf(property.getPhoneNumber())));
-
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-                    textViewDescription.setText(Html.fromHtml(property.getDescription(), Html.FROM_HTML_OPTION_USE_CSS_COLORS));
+                if (isHotel) {
+                    content.getHotelDetails(id);
                 } else {
-                    //noinspection deprecation
-                    textViewDescription.setText(Html.fromHtml(property.getDescription()));
+                    content.getPropertyDetails(id);
                 }
-
-                viewPager.setAdapter(new PageAdapter(property.getImagesLinks()));
-
-                if (Build.VERSION.SDK_INT > 22) {
-                    pagerSlidingTabStrip.setIndicatorColor(getResources().getColor(android.R.color.transparent, null));
-                } else {
-                    // noinspection deprecation
-                    getResources().getColor(android.R.color.transparent);
-                }
-                pagerSlidingTabStrip.setSelectedTabSrc(R.drawable.circle_gray_dark);
-                pagerSlidingTabStrip.setViewPager(viewPager);
-
-
                 break;
             case Cars:
-                textViewPrice.setVisibility(View.INVISIBLE);
-                textViewCode.setVisibility(View.INVISIBLE);
-                LinearLayoutSocial.setVisibility(View.GONE);
-                textView.setVisibility(View.GONE);
-
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-                    textViewDescription.setText(Html.fromHtml(car.getDescription(), Html.FROM_HTML_OPTION_USE_CSS_COLORS));
-                } else {
-                    //noinspection deprecation
-                    textViewDescription.setText(Html.fromHtml(car.getDescription()));
-                }
-
-                viewPager.setAdapter(new PageAdapter(car.getImages()));
-
-                if (Build.VERSION.SDK_INT > 22) {
-                    pagerSlidingTabStrip.setIndicatorColor(getResources().getColor(android.R.color.transparent, null));
-                } else {
-                    // noinspection deprecation
-                    getResources().getColor(android.R.color.transparent);
-                }
-                pagerSlidingTabStrip.setSelectedTabSrc(R.drawable.circle_gray_dark);
-                pagerSlidingTabStrip.setViewPager(viewPager);
+                content.getCarDetails(id);
                 break;
             case Services:
-                textViewPrice.setVisibility(View.INVISIBLE);
-                textViewCode.setVisibility(View.INVISIBLE);
-                LinearLayoutSocial.setVisibility(View.GONE);
-                textView.setVisibility(View.GONE);
-
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-                    textViewDescription.setText(Html.fromHtml(service.getDescription(), Html.FROM_HTML_OPTION_USE_CSS_COLORS));
-                } else {
-                    //noinspection deprecation
-                    textViewDescription.setText(Html.fromHtml(service.getDescription()));
-                }
-
-                ArrayList<Image> images = new ArrayList<>();
-                Image image = new Image();
-                image.setImageUrl(service.getImage());
-                images.add(image);
-                viewPager.setAdapter(new PageAdapter(images));
-
-                if (Build.VERSION.SDK_INT > 22) {
-                    pagerSlidingTabStrip.setIndicatorColor(getResources().getColor(android.R.color.transparent, null));
-                } else {
-                    // noinspection deprecation
-                    getResources().getColor(android.R.color.transparent);
-                }
-                pagerSlidingTabStrip.setSelectedTabSrc(R.drawable.circle_gray_dark);
-                pagerSlidingTabStrip.setViewPager(viewPager);
+                content.getServiceDetails(id);
                 break;
         }
     }
@@ -275,16 +187,12 @@ public class DetailsActivity extends AppCompatActivity {
     private class Listeners implements View.OnClickListener {
 
         String link;
-        int callNumber;
 
         public Listeners(String link) {
             this.link = link;
         }
 
-        public Listeners(int callNumber) {
-            this.callNumber = callNumber;
-        }
-
+        @RequiresApi(api = Build.VERSION_CODES.KITKAT)
         @Override
         public void onClick(View v) {
             Intent intent = new Intent(Intent.ACTION_VIEW);
@@ -316,9 +224,15 @@ public class DetailsActivity extends AppCompatActivity {
                     startActivity(intent);
                 }
             } else {
-                Intent intentCall = new Intent(Intent.ACTION_DIAL);
-                intentCall.setData(Uri.parse("tel:0" + String.valueOf(callNumber)));
-                startActivity(intentCall);
+                if (link.contains("/")) {
+                    String[] strings = link.split("/");
+                    BaseDialogHolder dialogHolder = new PhonesDialogHolder(DetailsActivity.this, strings);
+                    dialogHolder.showDialog();
+                } else {
+                    Intent intentCall = new Intent(Intent.ACTION_DIAL);
+                    intentCall.setData(Uri.parse("tel:" + link));
+                    startActivity(intentCall);
+                }
             }
         }
     }
@@ -387,7 +301,7 @@ public class DetailsActivity extends AppCompatActivity {
                     @Override
                     public void onClick(View view) {
                         Intent intent = new Intent(DetailsActivity.this, DetailsActivity.class);
-                        intent.putExtra(PROPERTY, property);
+                        intent.putExtra(ID_KEY, property.getId());
                         intent.putExtra(ITEM_TYPE, DetailsActivity.DetailsType.Properties);
                         startActivity(intent);
                         finish();
@@ -398,8 +312,8 @@ public class DetailsActivity extends AppCompatActivity {
             public void setDetails(Property property) {
                 this.property = property;
 
-                if (!property.getImagesLinks().isEmpty()) {
-                    Picasso.with(getApplicationContext()).load(property.getImagesLinks().get(0).getImageUrl()).
+                if (!property.getCoverPic().isEmpty()) {
+                    Picasso.with(getApplicationContext()).load(property.getCoverPic()).
                             placeholder(R.drawable.placeholder).fit().centerCrop().fit().centerCrop().
                             error(R.drawable.ic_warning).
                             into(imageViewCover);
@@ -505,6 +419,123 @@ public class DetailsActivity extends AppCompatActivity {
                 recycler.setItemAnimator(new DefaultItemAnimator());
                 recycler.setAdapter(new RelatedAdapter(properties));
 
+            } else {
+                Toast.makeText(getApplicationContext(), message, Toast.LENGTH_SHORT).show();
+            }
+        }
+
+        @Override
+        protected void onPostExecuteGetPropertyDetails(ActionType actionType, boolean success, String message, Property property) {
+            isLoading(false);
+            if (success) {
+                Content content = new Content();
+                if (isHotel) {
+                    content.getRelatedHotels(property.getId());
+                } else {
+                    content.getRelatedApartments(property.getId());
+                }
+
+                textViewPrice.setText(String.format("%s - %s %s", property.getPrice(), property.getPriceMonth(), getResources().getString(R.string.egp)));
+                textViewCode.setText(String.format("%s %s", getResources().getString(R.string.property_code), property.getCode()));
+                textViewArea.setText(String.format("%s%s%s", getString(R.string.area), property.getArea(), getString(R.string.m_)));
+                textViewBedrooms.setText(String.format("%s %s", getString(R.string.bedrooms), property.getBedrooms()));
+                textViewBathrooms.setText(String.format("%s %s", getString(R.string.bathrooms), property.getBathrooms()));
+                relativeLayoutDetails.setVisibility(View.VISIBLE);
+
+                imageViewInstagram.setOnClickListener(new Listeners(property.getInstagram()));
+                imageViewFacebook.setOnClickListener(new Listeners(property.getFacebook()));
+                imageViewTwitter.setOnClickListener(new Listeners(property.getTwitter()));
+
+
+                buttonCall.setOnClickListener(new Listeners(property.getPhoneNumber()));
+
+
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                    textViewDescription.setText(Html.fromHtml(property.getDescription(), Html.FROM_HTML_OPTION_USE_CSS_COLORS));
+                } else {
+                    //noinspection deprecation
+                    textViewDescription.setText(Html.fromHtml(property.getDescription()));
+                }
+
+                viewPager.setAdapter(new PageAdapter(property.getImagesLinks()));
+
+                if (Build.VERSION.SDK_INT > 22) {
+                    pagerSlidingTabStrip.setIndicatorColor(getResources().getColor(android.R.color.transparent, null));
+                } else {
+                    // noinspection deprecation
+                    getResources().getColor(android.R.color.transparent);
+                }
+                pagerSlidingTabStrip.setSelectedTabSrc(R.drawable.circle_gray_dark);
+                pagerSlidingTabStrip.setViewPager(viewPager);
+            } else {
+                Toast.makeText(getApplicationContext(), message, Toast.LENGTH_SHORT).show();
+            }
+        }
+
+        @Override
+        protected void onPostExecuteGetCarDetails(ActionType actionType, boolean success, String message, Car car) {
+            isLoading(false);
+            if (success) {
+                textViewPrice.setVisibility(View.INVISIBLE);
+                textViewCode.setVisibility(View.INVISIBLE);
+                LinearLayoutSocial.setVisibility(View.GONE);
+                textView.setVisibility(View.GONE);
+
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                    textViewDescription.setText(Html.fromHtml(car.getDescription(), Html.FROM_HTML_OPTION_USE_CSS_COLORS));
+                } else {
+                    //noinspection deprecation
+                    textViewDescription.setText(Html.fromHtml(car.getDescription()));
+                }
+                buttonCall.setOnClickListener(new Listeners("01027567799"));
+
+                viewPager.setAdapter(new PageAdapter(car.getImages()));
+
+                if (Build.VERSION.SDK_INT > 22) {
+                    pagerSlidingTabStrip.setIndicatorColor(getResources().getColor(android.R.color.transparent, null));
+                } else {
+                    // noinspection deprecation
+                    getResources().getColor(android.R.color.transparent);
+                }
+                pagerSlidingTabStrip.setSelectedTabSrc(R.drawable.circle_gray_dark);
+                pagerSlidingTabStrip.setViewPager(viewPager);
+            } else {
+                Toast.makeText(getApplicationContext(), message, Toast.LENGTH_SHORT).show();
+            }
+        }
+
+        @Override
+        protected void onPostExecuteGetServiceDetails(ActionType actionType, boolean success, String message, Service service) {
+            isLoading(false);
+            if (success) {
+                textViewPrice.setVisibility(View.INVISIBLE);
+                textViewCode.setVisibility(View.INVISIBLE);
+                LinearLayoutSocial.setVisibility(View.GONE);
+                textView.setVisibility(View.GONE);
+
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                    textViewDescription.setText(Html.fromHtml(service.getDescription(), Html.FROM_HTML_OPTION_USE_CSS_COLORS));
+                } else {
+                    //noinspection deprecation
+                    textViewDescription.setText(Html.fromHtml(service.getDescription()));
+                }
+
+                buttonCall.setOnClickListener(new Listeners("01027567799"));
+
+                ArrayList<Image> images = new ArrayList<>();
+                Image image = new Image();
+                image.setImageUrl(service.getImage());
+                images.add(image);
+                viewPager.setAdapter(new PageAdapter(images));
+
+                if (Build.VERSION.SDK_INT > 22) {
+                    pagerSlidingTabStrip.setIndicatorColor(getResources().getColor(android.R.color.transparent, null));
+                } else {
+                    // noinspection deprecation
+                    getResources().getColor(android.R.color.transparent);
+                }
+                pagerSlidingTabStrip.setSelectedTabSrc(R.drawable.circle_gray_dark);
+                pagerSlidingTabStrip.setViewPager(viewPager);
             } else {
                 Toast.makeText(getApplicationContext(), message, Toast.LENGTH_SHORT).show();
             }

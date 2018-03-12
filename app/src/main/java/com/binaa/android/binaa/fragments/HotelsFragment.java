@@ -28,9 +28,9 @@ import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 
+import static com.binaa.android.binaa.DetailsActivity.ID_KEY;
 import static com.binaa.android.binaa.DetailsActivity.IS_HOTEL;
 import static com.binaa.android.binaa.DetailsActivity.ITEM_TYPE;
-import static com.binaa.android.binaa.DetailsActivity.PROPERTY;
 
 /**
  * Created by Muhammad on 7/29/2017
@@ -152,7 +152,7 @@ public class HotelsFragment extends Fragment {
                     @Override
                     public void onClick(View view) {
                         Intent intent = new Intent(activity, DetailsActivity.class);
-                        intent.putExtra(PROPERTY, property);
+                        intent.putExtra(ID_KEY, property.getId());
                         intent.putExtra(IS_HOTEL, true);
                         intent.putExtra(ITEM_TYPE, DetailsActivity.DetailsType.Properties);
                         startActivity(intent);
@@ -163,8 +163,8 @@ public class HotelsFragment extends Fragment {
             public void setDetails(Property property) {
                 this.property = property;
 
-                if (!property.getImagesLinks().isEmpty()) {
-                    Picasso.with(activity).load(property.getImagesLinks().get(0).getImageUrl()).
+                if (!property.getCoverPic().isEmpty()) {
+                    Picasso.with(activity).load(property.getCoverPic()).
                             placeholder(R.drawable.placeholder).fit().centerCrop().fit().centerCrop().
                             error(R.drawable.ic_warning).
                             into(imageViewCover);

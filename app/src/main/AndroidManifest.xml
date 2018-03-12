@@ -2,6 +2,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.binaa.android.binaa">
 
+    <uses-permission android:name="android.permission.CALL_PHONE" />
     <application
         android:name=".utils.ApplicationBase"
         android:allowBackup="true"
@@ -10,8 +11,6 @@
         android:roundIcon="@drawable/binaa_logo"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name="com.binaa.android.binaa.MainActivity" />
-        <activity android:name="com.binaa.android.binaa.DetailsActivity" />
         <activity android:name="com.binaa.android.binaa.SplashActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -19,7 +18,22 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name="com.binaa.android.binaa.MainActivity" />
+        <activity android:name="com.binaa.android.binaa.DetailsActivity" />
         <activity android:name=".FilterActivity" />
+
+        <service android:name="com.binaa.android.binaa.utils.MyFirebaseMessagingService">
+            <intent-filter>
+                <action android:name="com.google.firebase.MESSAGING_EVENT" />
+            </intent-filter>
+        </service>
+
+        <service android:name="com.binaa.android.binaa.utils.MyFirebaseInstanceIDService">
+            <intent-filter>
+                <action android:name="com.google.firebase.INSTANCE_ID_EVENT" />
+            </intent-filter>
+        </service>
+
     </application>
 
 </manifest>

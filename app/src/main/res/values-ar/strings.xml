@@ -19,15 +19,18 @@
     <string name="app_icon">app_icon</string>
     <string name="egp"> EGP</string>
     <string name="save_icon">Save Icon</string>
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
     <string name="slogan">حجز شقق و فنادق و سيارات القاهره</string>
     <string name="related">ذات صلة:</string>
     <string name="en">En</string>
-    <string name="ar">ar</string>
+    <string name="ar">Ar</string>
     <string name="details">التفاصيل</string>
     <string name="area">المساحة: </string>
     <string name="bedrooms">الغرف: </string>
     <string name="bathrooms">الحمامات: </string>
     <string name="number_of_bedrooms">عدد الغرف</string>
+    <string name="web_site_">الموقع: </string>
 
     <string name="m_">م²</string>
     <string name="min_price">أقل سعر</string>
@@ -36,6 +39,7 @@
     <string name="no_result">لا يوجد نتائج لهذه البيانات</string>
     <string name="coming_soon">قريبا…</string>
     <string name="apartments">الشقق</string>
+    <string name="choose_number">إختر رقم</string>
 
     <string-array name="slideMenuItems">
         <item>الرئيسية</item>

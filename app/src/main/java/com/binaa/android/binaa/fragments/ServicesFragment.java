@@ -25,8 +25,8 @@ import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 
+import static com.binaa.android.binaa.DetailsActivity.ID_KEY;
 import static com.binaa.android.binaa.DetailsActivity.ITEM_TYPE;
-import static com.binaa.android.binaa.DetailsActivity.SERVICE;
 
 /**
  * Created by Muhammad on 7/29/2017
@@ -118,7 +118,7 @@ public class ServicesFragment extends Fragment {
                     @Override
                     public void onClick(View view) {
                         Intent intent = new Intent(activity, DetailsActivity.class);
-                        intent.putExtra(SERVICE, service);
+                        intent.putExtra(ID_KEY, service.getId());
                         intent.putExtra(ITEM_TYPE, DetailsActivity.DetailsType.Services);
                         startActivity(intent);
                     }

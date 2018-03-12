@@ -34,7 +34,7 @@
             android:layout_marginBottom="5dp"
             android:layout_marginLeft="5dp"
             android:layout_marginRight="5dp"
-            android:background="@color/black80"
+            android:background="@color/black60"
             android:padding="5dp">
 
             <com.binaa.android.binaa.views.TextViewRobotoRegular

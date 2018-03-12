@@ -13,6 +13,8 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 
 /**
@@ -21,11 +23,9 @@ import java.util.HashMap;
 public abstract class ContentVolley extends BaseVolley {
 
     private final String url = Constants.getApiUrl();
-    private Context context;
 
     public ContentVolley(String TAG, Context context) {
         super(TAG, VolleySingleton.getInstance(context));
-        this.context = context;
     }
 
     public void getProperties() {
@@ -58,33 +58,33 @@ public abstract class ContentVolley extends BaseVolley {
         requestAction(Request.Method.POST, url + "about", false);
     }
 
-    public void getPropertyDetails(String id) {
+    public void getPropertyDetails(int id) {
         params = new HashMap<>();
-        params.put("id", id);
+        params.put("id", id + "");
 
         actionType = ActionType.GetPropertyDetails;
         requestAction(Request.Method.POST, url + "apartment/show", false);
     }
 
-    public void getCarDetails(String id) {
+    public void getCarDetails(int id) {
         params = new HashMap<>();
-        params.put("id", id);
+        params.put("id", id + "");
 
         actionType = ActionType.GetCarDetails;
         requestAction(Request.Method.POST, url + "car/show", false);
     }
 
-    public void getHotelDetails(String id) {
+    public void getHotelDetails(int id) {
         params = new HashMap<>();
-        params.put("id", id);
+        params.put("id", id + "");
 
         actionType = ActionType.GetHotelDetails;
         requestAction(Request.Method.POST, url + "apartment/show", false);
     }
 
-    public void getServiceDetails(String id) {
+    public void getServiceDetails(int id) {
         params = new HashMap<>();
-        params.put("id", id);
+        params.put("id", id + "");
 
         actionType = ActionType.GetServiceDetails;
         requestAction(Request.Method.POST, url + "service/show", false);
@@ -101,20 +101,39 @@ public abstract class ContentVolley extends BaseVolley {
         requestAction(Request.Method.POST, url + "search", false);
     }
 
-    public void getRelatedApartments(String id) {
+    public void searchCars(String minPrice, String maxPrice) {
         params = new HashMap<>();
-        params.put("id", id);
+        params.put("min_price", minPrice);
+        params.put("max_price", maxPrice);
+
+        actionType = ActionType.searchCars;
+        requestAction(Request.Method.POST, url + "car/search", false);
+    }
+
+    public void getRelatedApartments(int id) {
+        params = new HashMap<>();
+        params.put("id", id + "");
 
         actionType = ActionType.GetRelatedApartment;
         requestAction(Request.Method.POST, url + "related/apartments", false);
     }
 
-    public void getRelatedHotels(String id) {
+    public void getRelatedHotels(int id) {
         params = new HashMap<>();
-        params.put("id", id);
+        params.put("id", id + "");
 
         actionType = ActionType.GetRelatedHotels;
         requestAction(Request.Method.POST, url + "related/hotels", false);
+    }
+
+    public void addRegistration(String token) {
+
+        params = new HashMap<>();
+        params.put("device_id", token);
+
+        actionType = ActionType.addRegistration;
+
+        requestAction(Request.Method.POST, url + "store/token", false);
     }
 
     @Override
@@ -153,6 +172,16 @@ public abstract class ContentVolley extends BaseVolley {
                     Property property = new Property(propertyItem);
                     properties.add(property);
                 }
+
+                Collections.sort(properties, new Comparator<Property>() {
+                    @Override
+                    public int compare(Property property1, Property property2) {
+                        int code1 = Integer.parseInt(property1.getCode());
+                        int code2 = Integer.parseInt(property2.getCode());
+                        return code1 - code2;
+                    }
+                });
+
                 onPostExecuteGetProperties(action, success, message, properties);
                 break;
             case GetPropertyDetails:
@@ -162,6 +191,7 @@ public abstract class ContentVolley extends BaseVolley {
 
                 onPostExecuteGetPropertyDetails(action, success, message, property);
                 break;
+            case searchCars:
             case GetCars:
                 ArrayList<Car> cars = new ArrayList<>();
                 dataArray = jsonObject.optJSONArray("data");
@@ -208,6 +238,9 @@ public abstract class ContentVolley extends BaseVolley {
 
                 onPostExecuteAbout(action, success, message, about);
                 break;
+            case addRegistration:
+                onPostExecute(action, success, message);
+                break;
         }
     }
 
@@ -229,6 +262,7 @@ public abstract class ContentVolley extends BaseVolley {
                 onPostExecuteGetPropertyDetails(action, false, message, null);
                 break;
             case GetCars:
+            case searchCars:
                 onPostExecuteGetCars(action, false, message, null);
                 break;
             case GetCarDetails:
@@ -246,7 +280,13 @@ public abstract class ContentVolley extends BaseVolley {
             case about:
                 onPostExecuteAbout(action, success, message, null);
                 break;
+            case addRegistration:
+                onPostExecute(action, success, message);
+                break;
         }
+    }
+
+    protected void onPostExecute(ActionType actionType, boolean success, String message) {
     }
 
     protected void onPostExecuteGetPropertyDetails(ActionType actionType, boolean success, String message, Property property) {
@@ -276,6 +316,6 @@ public abstract class ContentVolley extends BaseVolley {
     public enum ActionType implements BaseVolley.ActionType {
         GetApartments, GetPropertyDetails, GetHotels, GetHotelDetails,
         GetCars, GetCarDetails, GetServices, GetServiceDetails, GetRelatedApartment,
-        GetRelatedHotels, search, getContacts, about
+        GetRelatedHotels, search, getContacts, about, addRegistration, searchCars
     }
 }

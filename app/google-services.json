@@ -1,35 +1,27 @@
 {
   "project_info": {
-    "project_number": "794809843367",
-    "firebase_url": "https://homeland-8e2e1.firebaseio.com",
-    "project_id": "homeland-8e2e1",
-    "storage_bucket": "homeland-8e2e1.appspot.com"
+    "project_number": "453034853690",
+    "firebase_url": "https://binaa-c38a6.firebaseio.com",
+    "project_id": "binaa-c38a6",
+    "storage_bucket": "binaa-c38a6.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:794809843367:android:9fd8cdfd1097c4cf",
+        "mobilesdk_app_id": "1:453034853690:android:0ab137a0ce44331d",
         "android_client_info": {
           "package_name": "com.binaa.android.binaa"
         }
       },
       "oauth_client": [
         {
-          "client_id": "794809843367-rc861m0q7grime63dpuvaa6bdjtedcjq.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "com.binaa.android.binaa",
-            "certificate_hash": "28f0713f708362032efe16c70841894972a0b762"
-          }
-        },
-        {
-          "client_id": "794809843367-hf3hh7q28hqkopv0oddmkvhfm580oqpn.apps.googleusercontent.com",
+          "client_id": "453034853690-5bh32j311714qefrgh4004hhrq8nju21.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyAzxK85p0l2HLFPYZJTF4pu7NbIF1ETYGs"
+          "current_key": "AIzaSyDa5ZvrhACss3uUmPjZ4ovyjMMT-HW0NYU"
         }
       ],
       "services": {
@@ -37,13 +29,8 @@
           "status": 1
         },
         "appinvite_service": {
-          "status": 2,
-          "other_platform_oauth_client": [
-            {
-              "client_id": "794809843367-hf3hh7q28hqkopv0oddmkvhfm580oqpn.apps.googleusercontent.com",
-              "client_type": 3
-            }
-          ]
+          "status": 1,
+          "other_platform_oauth_client": []
         },
         "ads_service": {
           "status": 2

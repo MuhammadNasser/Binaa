@@ -69,7 +69,8 @@
         android:layout_centerInParent="true"
         android:background="@color/blackTransparent"
         android:clickable="true"
-        android:visibility="gone">
+        android:visibility="gone"
+        android:focusable="true">
 
         <ProgressBar
             android:layout_width="wrap_content"

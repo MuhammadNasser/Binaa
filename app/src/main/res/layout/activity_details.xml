@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/grayLight">
+    android:background="@color/grayLight2">
 
     <include
         android:id="@+id/toolbar"
@@ -114,7 +114,8 @@
                             android:layout_width="30dp"
                             android:layout_height="30dp"
                             android:layout_centerHorizontal="true"
-                            android:src="@drawable/ic_area" />
+                            android:src="@drawable/ic_area"
+                            android:contentDescription="@string/app_name" />
 
                         <com.binaa.android.binaa.views.TextViewRobotoLight
                             android:id="@+id/textViewArea"
@@ -135,7 +136,8 @@
                             android:layout_width="30dp"
                             android:layout_height="30dp"
                             android:layout_centerHorizontal="true"
-                            android:src="@drawable/ic_bedrooms" />
+                            android:src="@drawable/ic_bedrooms"
+                            android:contentDescription="@string/app_name" />
 
                         <com.binaa.android.binaa.views.TextViewRobotoLight
                             android:id="@+id/textViewBedrooms"
@@ -158,7 +160,8 @@
                             android:layout_width="30dp"
                             android:layout_height="30dp"
                             android:layout_centerHorizontal="true"
-                            android:src="@drawable/ic_bathrooms" />
+                            android:src="@drawable/ic_bathrooms"
+                            android:contentDescription="@string/app_name" />
 
                         <com.binaa.android.binaa.views.TextViewRobotoLight
                             android:id="@+id/textViewBathrooms"

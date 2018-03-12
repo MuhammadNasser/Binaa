@@ -27,7 +27,7 @@ import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 
-import static com.binaa.android.binaa.DetailsActivity.CAR;
+import static com.binaa.android.binaa.DetailsActivity.ID_KEY;
 import static com.binaa.android.binaa.DetailsActivity.ITEM_TYPE;
 
 /**
@@ -104,7 +104,7 @@ public class CarsFragment extends Fragment {
             RecyclerView.ViewHolder holder;
 
             //inflater your layout and pass it to view holder
-            view = inflater.inflate(R.layout.cars_list_item, viewGroup, false);
+            view = inflater.inflate(R.layout.home_list_item, viewGroup, false);
             holder = new ItemHolder(view);
 
             return holder;
@@ -131,6 +131,8 @@ public class CarsFragment extends Fragment {
 
             ImageView imageViewCover;
             TextView textViewDescription;
+            TextView textViewPrice;
+            TextView textViewCode;
 
             Car car;
 
@@ -138,12 +140,14 @@ public class CarsFragment extends Fragment {
                 super(itemView);
                 imageViewCover = itemView.findViewById(R.id.imageViewCover);
                 textViewDescription = itemView.findViewById(R.id.textViewDescription);
+                textViewCode = itemView.findViewById(R.id.textViewCode);
+                textViewPrice = itemView.findViewById(R.id.textViewPrice);
 
                 itemView.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
                         Intent intent = new Intent(activity, DetailsActivity.class);
-                        intent.putExtra(CAR, car);
+                        intent.putExtra(ID_KEY, car.getId());
                         intent.putExtra(ITEM_TYPE, DetailsActivity.DetailsType.Cars);
                         startActivity(intent);
                     }
@@ -168,6 +172,9 @@ public class CarsFragment extends Fragment {
                     //noinspection deprecation
                     textViewDescription.setText(Html.fromHtml(car.getDescription()));
                 }
+
+                textViewCode.setText(car.getModel());
+                textViewPrice.setText(String.format("%s - %s %s", car.getPrice(), car.getPriceMonth(), getResources().getString(R.string.egp)));
             }
 
         }

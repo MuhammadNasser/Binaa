@@ -1,39 +1,32 @@
 package com.binaa.android.binaa.models;
 
-import android.os.Parcel;
-import android.os.Parcelable;
-
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
 /**
  * Created by Muhammad on 8/19/2017
  */
 
-public class Car implements Parcelable {
+public class Car implements Serializable {
 
-    public static final Creator<Car> CREATOR = new Creator<Car>() {
-        @Override
-        public Car createFromParcel(Parcel in) {
-            return new Car(in);
-        }
-
-        @Override
-        public Car[] newArray(int size) {
-            return new Car[size];
-        }
-    };
-
-    private String id;
+    private int id;
     private String description;
+    private String price;
+    private String priceMonth;
+    private String model;
     private ArrayList<Image> images = new ArrayList<>();
 
+
     public Car(JSONObject jsonObject) throws JSONException {
-        this.id = jsonObject.optString("id");
+        this.id = jsonObject.optInt("id");
         this.description = jsonObject.optString("description");
+        this.model = jsonObject.optString("model");
+        this.price = jsonObject.optString("price");
+        this.priceMonth = jsonObject.optString("price_per_month");
 
         JSONArray images = jsonObject.getJSONArray("images");
         for (int i = 0; i < images.length(); i++) {
@@ -43,13 +36,7 @@ public class Car implements Parcelable {
         }
     }
 
-    protected Car(Parcel in) {
-        id = in.readString();
-        description = in.readString();
-        images = in.createTypedArrayList(Image.CREATOR);
-    }
-
-    public String getId() {
+    public int getId() {
         return id;
     }
 
@@ -57,19 +44,19 @@ public class Car implements Parcelable {
         return description;
     }
 
+    public String getPrice() {
+        return price;
+    }
+
+    public String getPriceMonth() {
+        return priceMonth;
+    }
+
+    public String getModel() {
+        return model;
+    }
+
     public ArrayList<Image> getImages() {
         return images;
-    }
-
-    @Override
-    public int describeContents() {
-        return 0;
-    }
-
-    @Override
-    public void writeToParcel(Parcel parcel, int i) {
-        parcel.writeString(id);
-        parcel.writeString(description);
-        parcel.writeTypedList(images);
     }
 }

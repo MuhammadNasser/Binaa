@@ -29,6 +29,7 @@
             android:padding="10dp">
 
             <com.binaa.android.binaa.views.TextViewRobotoRegular
+                android:id="@+id/textView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="start"
@@ -48,7 +49,7 @@
                 android:inputType="number"
                 android:maxLines="1"
                 android:padding="5dp"
-                android:textColor="@drawable/selector_text_edit_text"
+                android:textColor="@drawable/selector_text"
                 android:textCursorDrawable="@drawable/color_cursor"
                 android:textSize="@dimen/textSizeSmall" />
 
@@ -72,7 +73,7 @@
                 android:inputType="number"
                 android:maxLines="1"
                 android:padding="5dp"
-                android:textColor="@drawable/selector_text_edit_text"
+                android:textColor="@drawable/selector_text"
                 android:textCursorDrawable="@drawable/color_cursor"
                 android:textSize="@dimen/textSizeSmall" />
 
@@ -96,7 +97,7 @@
                 android:inputType="number"
                 android:maxLines="1"
                 android:padding="5dp"
-                android:textColor="@drawable/selector_text_edit_text"
+                android:textColor="@drawable/selector_text"
                 android:textCursorDrawable="@drawable/color_cursor"
                 android:textSize="@dimen/textSizeSmall" />
 

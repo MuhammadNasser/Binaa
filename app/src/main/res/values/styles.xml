@@ -14,5 +14,4 @@
         <item name="android:textSize">@dimen/textSizeSmall</item>
     </style>
 
-    <color name="black80">#80000000</color>
 </resources>

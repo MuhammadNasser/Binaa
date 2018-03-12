@@ -18,6 +18,7 @@ package com.binaa.android.binaa.utils;
 
 import android.util.Log;
 
+import com.binaa.android.binaa.server.ContentVolley;
 import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.firebase.iid.FirebaseInstanceIdService;
 
@@ -41,7 +42,23 @@ public class MyFirebaseInstanceIDService extends FirebaseInstanceIdService {
         // If you want to send messages to this application instance or
         // manage this apps subscriptions on the server side, send the
         // Instance ID token to your app server.
-//        sendRegistrationToServer(refreshedToken);
+        sendRegistrationToServer(refreshedToken);
+    }
+
+    private void sendRegistrationToServer(String token) {
+        Register register = new Register();
+        register.addRegistration(token);
+    }
+
+    private class Register extends ContentVolley {
+        public Register() {
+            super(TAG, getApplicationContext());
+        }
+
+        @Override
+        protected void onPreExecute(ActionType actionType) {
+
+        }
     }
 
 }

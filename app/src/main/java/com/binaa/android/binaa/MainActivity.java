@@ -40,6 +40,7 @@ import java.util.Locale;
 
 import static com.binaa.android.binaa.FilterActivity.TYPE;
 import static com.binaa.android.binaa.FilterActivity.apartments;
+import static com.binaa.android.binaa.FilterActivity.cars;
 import static com.binaa.android.binaa.FilterActivity.hotels;
 
 
@@ -303,6 +304,9 @@ public class MainActivity extends AppCompatActivity implements TabLayout.OnTabSe
                     startActivity(intent);
                 } else if (currentFragment instanceof HotelsFragment) {
                     intent.putExtra(TYPE, hotels);
+                    startActivity(intent);
+                } else if (currentFragment instanceof CarsFragment) {
+                    intent.putExtra(TYPE, cars);
                     startActivity(intent);
                 }
                 break;

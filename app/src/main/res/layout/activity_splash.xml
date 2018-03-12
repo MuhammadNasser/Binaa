@@ -17,12 +17,31 @@
         android:id="@+id/textViewActivityTitle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
         android:layout_below="@+id/imageViewLogo"
+        android:layout_centerHorizontal="true"
         android:layout_marginTop="-30dp"
-        android:textColor="@color/colorPrimaryDark"
+        android:text="@string/slogan"
         android:textAlignment="center"
-        android:textSize="@dimen/textSizeLarge"
-        android:text="@string/slogan"/>
+        android:textColor="@color/colorPrimaryDark"
+        android:textSize="@dimen/textSizeLarge" />
+
+    <RelativeLayout
+        android:id="@+id/relativeLayoutLoading"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/textViewActivityTitle"
+        android:layout_centerHorizontal="true"
+        android:layout_margin="20dp"
+        android:clickable="true"
+        android:focusable="true"
+        android:visibility="gone">
+
+        <ProgressBar
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:indeterminate="true" />
+    </RelativeLayout>
+
 
 </RelativeLayout>

@@ -1,34 +1,19 @@
 package com.binaa.android.binaa.models;
 
-import android.os.Parcel;
-import android.os.Parcelable;
-
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
 /**
  * Created by Muhammad on 8/19/2017
  */
 
-public class Property implements Parcelable {
+public class Property implements Serializable {
 
-
-    public static final Creator<Property> CREATOR = new Creator<Property>() {
-        @Override
-        public Property createFromParcel(Parcel in) {
-            return new Property(in);
-        }
-
-        @Override
-        public Property[] newArray(int size) {
-            return new Property[size];
-        }
-    };
-
-    private String id;
+    private int id;
     private String title;
     private String code;
     private String description;
@@ -40,12 +25,13 @@ public class Property implements Parcelable {
     private String bedrooms;
     private String bathrooms;
     private String price;
+    private String coverPic;
     private String priceMonth;
     private String phoneNumber;
     private ArrayList<Image> imagesLinks = new ArrayList<>();
 
     public Property(JSONObject jsonObject) throws JSONException {
-        this.id = jsonObject.optString("id");
+        this.id = jsonObject.optInt("id");
         this.title = jsonObject.optString("title");
         this.code = jsonObject.optString("code");
         this.description = jsonObject.optString("description");
@@ -59,6 +45,7 @@ public class Property implements Parcelable {
         this.area = jsonObject.optString("area");
         this.bedrooms = jsonObject.optString("number_of_bedrooms");
         this.bathrooms = jsonObject.optString("number_of_bathrooms");
+        this.coverPic = jsonObject.optString("cover_pic");
 
         JSONArray images = jsonObject.getJSONArray("images");
         for (int i = 0; i < images.length(); i++) {
@@ -68,28 +55,8 @@ public class Property implements Parcelable {
         }
     }
 
-    public Property() {
-    }
 
-    protected Property(Parcel in) {
-        id = in.readString();
-        title = in.readString();
-        code = in.readString();
-        description = in.readString();
-        facebook = in.readString();
-        twitter = in.readString();
-        instagram = in.readString();
-        views = in.readString();
-        area = in.readString();
-        bedrooms = in.readString();
-        bathrooms = in.readString();
-        price = in.readString();
-        priceMonth = in.readString();
-        phoneNumber = in.readString();
-        imagesLinks = in.createTypedArrayList(Image.CREATOR);
-    }
-
-    public String getId() {
+    public int getId() {
         return id;
     }
 
@@ -149,27 +116,7 @@ public class Property implements Parcelable {
         return bathrooms;
     }
 
-    @Override
-    public int describeContents() {
-        return 0;
-    }
-
-    @Override
-    public void writeToParcel(Parcel dest, int flags) {
-        dest.writeString(id);
-        dest.writeString(title);
-        dest.writeString(code);
-        dest.writeString(description);
-        dest.writeString(facebook);
-        dest.writeString(twitter);
-        dest.writeString(instagram);
-        dest.writeString(views);
-        dest.writeString(area);
-        dest.writeString(bedrooms);
-        dest.writeString(bathrooms);
-        dest.writeString(price);
-        dest.writeString(priceMonth);
-        dest.writeString(phoneNumber);
-        dest.writeTypedList(imagesLinks);
+    public String getCoverPic() {
+        return coverPic;
     }
 }

@@ -18,11 +18,13 @@
     <string name="who_we_are">Who are we?</string>
     <string name="app_icon">app_icon</string>
     <string name="egp"> EGP</string>
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
     <string name="save_icon">Save Icon</string>
     <string name="slogan">Booking apartments, hotels and cars Cairo</string>
     <string name="related">Related: </string>
     <string name="en">En</string>
-    <string name="ar">ar</string>
+    <string name="ar">Ar</string>
     <string name="details">Details</string>
     <string name="area">area: </string>
     <string name="bedrooms">bedrooms: </string>
@@ -35,6 +37,8 @@
     <string name="no_result">No results for this data</string>
     <string name="coming_soon">Coming Soon…</string>
     <string name="apartments">Apartments</string>
+    <string name="web_site_">Web Site: </string>
+    <string name="choose_number">Choose number</string>
 
     <string-array name="slideMenuItems">
         <item>Home</item>

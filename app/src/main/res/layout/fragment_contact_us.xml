@@ -24,7 +24,6 @@
         android:layout_marginTop="20dp"
         android:orientation="vertical">
 
-
         <com.binaa.android.binaa.views.TextViewRobotoLight
             android:id="@+id/textViewAddress"
             android:layout_width="match_parent"
@@ -71,6 +70,22 @@
             android:layout_marginRight="10dp"
             android:layout_marginTop="5dp"
             android:background="@color/gray" />
+
+        <com.binaa.android.binaa.views.TextViewRobotoLight
+            android:id="@+id/textViewWeb"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginTop="10dp"
+            android:drawableLeft="@drawable/web"
+            android:drawablePadding="5dp"
+            android:drawableStart="@drawable/web"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp"
+            android:text="@string/web_site_"
+            android:textColor="@color/gray"
+            android:textSize="@dimen/textSizeNormal" />
 
     </LinearLayout>
 

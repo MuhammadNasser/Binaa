@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:background="@drawable/shape_shadow_rounded"
+    android:orientation="vertical"
+    android:paddingBottom="2dp"
+    android:paddingEnd="2dp"
+    android:paddingLeft="1dp"
+    android:paddingRight="1dp"
+    android:paddingStart="1dp"
+    android:tag="layout">
+
+    <LinearLayout
+        android:id="@+id/linearLayout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/rounded_rect_white_fill"
+        android:orientation="vertical"
+        android:padding="10dp">
+
+        <com.binaa.android.binaa.views.TextViewRobotoBold
+            android:id="@+id/textView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="5dp"
+            android:background="@drawable/selector_background_textview"
+            android:gravity="center"
+            android:lines="1"
+            android:text="@string/choose_number"
+            android:textColor="@color/gray"
+            android:textSize="@dimen/textSizeLarge" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="0.5dp"
+            android:layout_marginBottom="10dp"
+            android:layout_marginEnd="20dp"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="10dp"
+            android:background="@color/grayDark" />
+
+    </LinearLayout>
+
+</LinearLayout>

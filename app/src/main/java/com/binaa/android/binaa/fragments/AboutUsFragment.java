@@ -1,7 +1,9 @@
 package com.binaa.android.binaa.fragments;
 
+import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -48,7 +50,12 @@ public class AboutUsFragment extends Fragment {
         protected void onPostExecuteAbout(ActionType actionType, boolean success, String message, String about) {
             activity.isLoading(false);
             if (success) {
-                textViewAbout.setText(about);
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                    textViewAbout.setText(Html.fromHtml(about, Html.FROM_HTML_OPTION_USE_CSS_COLORS));
+                } else {
+                    //noinspection deprecation
+                    textViewAbout.setText(Html.fromHtml(about));
+                }
             } else {
                 Toast.makeText(activity, message, Toast.LENGTH_SHORT).show();
             }

@@ -19,6 +19,8 @@ package com.binaa.android.binaa.utils;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
+import android.content.Intent;
+import android.provider.Settings;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.app.TaskStackBuilder;
 import android.util.Log;
@@ -27,8 +29,6 @@ import com.binaa.android.binaa.MainActivity;
 import com.binaa.android.binaa.R;
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
-
-import java.util.Map;
 
 public class MyFirebaseMessagingService extends FirebaseMessagingService {
 
@@ -67,32 +67,31 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         // message, here is where that should be initiated. See sendNotification method below.
     }
 
+    @SuppressWarnings("ConstantConditions")
     public void sendCustomNotification(RemoteMessage remoteMessage) {
 
-        Map data = remoteMessage.getData();
-        String title = data.get("title").toString();
-        String content = data.get("content").toString();
+        String title = remoteMessage.getNotification().getTitle();
+        String content = remoteMessage.getNotification().getBody();
 
-        // The stack builder object will contain an artificial back stack for
-        // the
-        // started Activity.
-        // This ensures that navigating backward from the Activity leads out of
-        // your application to the Home screen.
+        Intent resultIntent = new Intent(this, MainActivity.class);
+
         TaskStackBuilder stackBuilder = TaskStackBuilder.create(this);
-        // Adds the back stack for the Intent (but not the Intent itself)
         stackBuilder.addParentStack(MainActivity.class);
-        // Adds the Intent that starts the Activity to the top of the stack
+        stackBuilder.addNextIntent(resultIntent);
         PendingIntent pendingIntent = stackBuilder.getPendingIntent(0,
                 PendingIntent.FLAG_UPDATE_CURRENT);
 
+        @SuppressWarnings("deprecation")
         NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(this)
-                .setSmallIcon(R.drawable.binaa_logo)
+                .setSmallIcon(R.drawable.notifi_logo)
                 .setContentTitle(title)
                 .setContentText(content)
+                .setSound(Settings.System.DEFAULT_NOTIFICATION_URI)
                 .setContentIntent(pendingIntent);
 
         NotificationManager mNotificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
-        // mId allows you to update the notification later on.
-        mNotificationManager.notify(100, notificationBuilder.build());
+        if (mNotificationManager != null) {
+            mNotificationManager.notify(100, notificationBuilder.build());
+        }
     }
 }

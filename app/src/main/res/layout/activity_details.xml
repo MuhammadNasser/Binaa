@@ -99,8 +99,7 @@
                     android:layout_height="wrap_content"
                     android:layout_centerHorizontal="true"
                     android:layout_margin="10dp"
-                    android:orientation="horizontal"
-                    android:visibility="gone">
+                    android:visibility="visible">
 
                     <RelativeLayout
                         android:layout_width="wrap_content"
@@ -114,8 +113,8 @@
                             android:layout_width="30dp"
                             android:layout_height="30dp"
                             android:layout_centerHorizontal="true"
-                            android:src="@drawable/ic_area"
-                            android:contentDescription="@string/app_name" />
+                            android:contentDescription="@string/app_name"
+                            android:src="@drawable/ic_area" />
 
                         <com.binaa.android.binaa.views.TextViewRobotoLight
                             android:id="@+id/textViewArea"
@@ -136,8 +135,8 @@
                             android:layout_width="30dp"
                             android:layout_height="30dp"
                             android:layout_centerHorizontal="true"
-                            android:src="@drawable/ic_bedrooms"
-                            android:contentDescription="@string/app_name" />
+                            android:contentDescription="@string/app_name"
+                            android:src="@drawable/ic_bedrooms" />
 
                         <com.binaa.android.binaa.views.TextViewRobotoLight
                             android:id="@+id/textViewBedrooms"
@@ -160,8 +159,8 @@
                             android:layout_width="30dp"
                             android:layout_height="30dp"
                             android:layout_centerHorizontal="true"
-                            android:src="@drawable/ic_bathrooms"
-                            android:contentDescription="@string/app_name" />
+                            android:contentDescription="@string/app_name"
+                            android:src="@drawable/ic_bathrooms" />
 
                         <com.binaa.android.binaa.views.TextViewRobotoLight
                             android:id="@+id/textViewBathrooms"
@@ -268,28 +267,50 @@
                     android:textColor="@color/grayDark"
                     android:textSize="@dimen/textSizeLarge" />
 
-
-                <com.binaa.android.binaa.views.ButtonRobotoRegular
-                    android:id="@+id/buttonCall"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
                     android:layout_below="@+id/textView"
-                    android:layout_centerHorizontal="true"
-                    android:layout_marginBottom="40dp"
-                    android:layout_marginLeft="20dp"
-                    android:layout_marginRight="20dp"
-                    android:layout_marginTop="20dp"
-                    android:autoLink="phone"
-                    android:background="@drawable/selector_background_button"
-                    android:contentDescription="@string/save_icon"
-                    android:drawableLeft="@drawable/customer_service"
-                    android:drawablePadding="20dp"
-                    android:drawableStart="@drawable/customer_service"
-                    android:padding="10dp"
-                    android:text="@string/call_customer_service"
-                    android:textAllCaps="false"
-                    android:textColor="@color/white"
-                    android:textSize="@dimen/textSizeSmall" />
+                    android:layout_centerHorizontal="true">
+
+                    <com.binaa.android.binaa.views.ButtonRobotoRegular
+                        android:id="@+id/buttonCall"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="20dp"
+                        android:layout_toEndOf="@+id/view"
+                        android:layout_toRightOf="@+id/view"
+                        android:autoLink="phone"
+                        android:background="@drawable/selector_background_button"
+                        android:contentDescription="@string/save_icon"
+                        android:padding="10dp"
+                        android:text="@string/call_customer_service"
+                        android:textAllCaps="false"
+                        android:textColor="@color/white"
+                        android:textSize="@dimen/textSizeSmall" />
+
+                    <View
+                        android:id="@+id/view"
+                        android:layout_width="5dp"
+                        android:layout_height="wrap_content"
+                        android:layout_centerInParent="true" />
+
+                    <com.binaa.android.binaa.views.ButtonRobotoRegular
+                        android:id="@+id/buttonReserve"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="20dp"
+                        android:layout_toLeftOf="@+id/view"
+                        android:layout_toStartOf="@+id/view"
+                        android:background="@drawable/selector_background_button"
+                        android:contentDescription="@string/save_icon"
+                        android:padding="10dp"
+                        android:text="@string/book"
+                        android:textAllCaps="false"
+                        android:textColor="@color/white"
+                        android:textSize="@dimen/textSizeSmall"
+                        tools:ignore="RelativeOverlap" />
+                </RelativeLayout>
 
             </RelativeLayout>
 

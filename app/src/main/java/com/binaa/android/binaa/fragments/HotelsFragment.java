@@ -22,14 +22,13 @@ import android.widget.Toast;
 import com.binaa.android.binaa.DetailsActivity;
 import com.binaa.android.binaa.MainActivity;
 import com.binaa.android.binaa.R;
-import com.binaa.android.binaa.models.Property;
+import com.binaa.android.binaa.models.Hotel;
 import com.binaa.android.binaa.server.ContentVolley;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 
 import static com.binaa.android.binaa.DetailsActivity.ID_KEY;
-import static com.binaa.android.binaa.DetailsActivity.IS_HOTEL;
 import static com.binaa.android.binaa.DetailsActivity.ITEM_TYPE;
 
 /**
@@ -92,15 +91,15 @@ public class HotelsFragment extends Fragment {
 
     public class HotelsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
-        private ArrayList<Property> properties;
+        private ArrayList<Hotel> hotels;
 
 
         private LayoutInflater inflater;
 
-        public HotelsAdapter(Activity activity, ArrayList<Property> properties) {
+        public HotelsAdapter(Activity activity, ArrayList<Hotel> hotels) {
 
             inflater = activity.getLayoutInflater();
-            this.properties = properties;
+            this.hotels = hotels;
         }
 
         @Override
@@ -123,12 +122,12 @@ public class HotelsFragment extends Fragment {
             layoutParams.height = (int) (recyclerView.getMeasuredHeight() * 0.75);
 
             ItemHolder itemHolder = (ItemHolder) viewHolder;
-            itemHolder.setDetails(properties.get(position));
+            itemHolder.setDetails(hotels.get(position));
         }
 
         @Override
         public int getItemCount() {
-            return properties.size();
+            return hotels.size();
         }
 
         public class ItemHolder extends RecyclerView.ViewHolder {
@@ -138,7 +137,7 @@ public class HotelsFragment extends Fragment {
             TextView textViewCode;
             TextView textViewDescription;
 
-            Property property;
+            Hotel hotel;
 
             public ItemHolder(View itemView) {
                 super(itemView);
@@ -152,19 +151,18 @@ public class HotelsFragment extends Fragment {
                     @Override
                     public void onClick(View view) {
                         Intent intent = new Intent(activity, DetailsActivity.class);
-                        intent.putExtra(ID_KEY, property.getId());
-                        intent.putExtra(IS_HOTEL, true);
-                        intent.putExtra(ITEM_TYPE, DetailsActivity.DetailsType.Properties);
+                        intent.putExtra(ID_KEY, hotel.getId());
+                        intent.putExtra(ITEM_TYPE, DetailsActivity.DetailsType.Hotels);
                         startActivity(intent);
                     }
                 });
             }
 
-            public void setDetails(Property property) {
-                this.property = property;
+            public void setDetails(Hotel hotel) {
+                this.hotel = hotel;
 
-                if (!property.getCoverPic().isEmpty()) {
-                    Picasso.with(activity).load(property.getCoverPic()).
+                if (!hotel.getCoverPic().isEmpty()) {
+                    Picasso.with(activity).load(hotel.getCoverPic()).
                             placeholder(R.drawable.placeholder).fit().centerCrop().fit().centerCrop().
                             error(R.drawable.ic_warning).
                             into(imageViewCover);
@@ -172,14 +170,14 @@ public class HotelsFragment extends Fragment {
                     imageViewCover.setImageResource(R.drawable.ic_warning);
                 }
 
-                textViewPrice.setText(String.format("%s - %s %s", property.getPrice(), property.getPriceMonth(), getResources().getString(R.string.egp)));
-                textViewCode.setText(String.format("%s %s", getResources().getString(R.string.property_code), property.getCode()));
+                textViewPrice.setText(String.format("%s - %s %s", hotel.getPrice(), hotel.getPriceMonth(), getResources().getString(R.string.egp)));
+                textViewCode.setText(String.format("%s %s", getResources().getString(R.string.property_code), hotel.getCode()));
 
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-                    textViewDescription.setText(Html.fromHtml(property.getDescription(), Html.FROM_HTML_OPTION_USE_CSS_COLORS));
+                    textViewDescription.setText(Html.fromHtml(hotel.getDescription(), Html.FROM_HTML_OPTION_USE_CSS_COLORS));
                 } else {
                     //noinspection deprecation
-                    textViewDescription.setText(Html.fromHtml(property.getDescription()));
+                    textViewDescription.setText(Html.fromHtml(hotel.getDescription()));
                 }
             }
 
@@ -198,11 +196,11 @@ public class HotelsFragment extends Fragment {
         }
 
         @Override
-        protected void onPostExecuteGetProperties(ActionType actionType, boolean success, String message, ArrayList<Property> properties) {
+        protected void onPostExecuteGetHotels(ActionType actionType, boolean success, String message, ArrayList<Hotel> hotels) {
             activity.isLoading(false);
             if (success) {
-                if (properties.size() != 0) {
-                    recyclerView.setAdapter(new HotelsAdapter(activity, properties));
+                if (hotels.size() != 0) {
+                    recyclerView.setAdapter(new HotelsAdapter(activity, hotels));
                 } else {
                     relativeLayoutComingSoon.setVisibility(View.VISIBLE);
                     recyclerView.setVisibility(View.GONE);

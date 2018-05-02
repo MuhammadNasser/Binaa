@@ -26,6 +26,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.binaa.android.binaa.models.Car;
+import com.binaa.android.binaa.models.Hotel;
 import com.binaa.android.binaa.models.Property;
 import com.binaa.android.binaa.server.ContentVolley;
 import com.binaa.android.binaa.utils.ApplicationBase;
@@ -36,8 +37,9 @@ import java.util.ArrayList;
 import java.util.Locale;
 
 import static com.binaa.android.binaa.DetailsActivity.ID_KEY;
-import static com.binaa.android.binaa.DetailsActivity.IS_HOTEL;
 import static com.binaa.android.binaa.DetailsActivity.ITEM_TYPE;
+import static com.binaa.android.binaa.ReservationActivity.apartments;
+import static com.binaa.android.binaa.ReservationActivity.hotels;
 
 
 /**
@@ -47,9 +49,6 @@ import static com.binaa.android.binaa.DetailsActivity.ITEM_TYPE;
 public class FilterActivity extends AppCompatActivity {
 
     public static String TYPE = "type";
-    public static String apartments = "apartments";
-    public static String hotels = "hotels";
-    public static String cars = "cars";
 
     private final String TAG = this.toString();
 
@@ -58,7 +57,7 @@ public class FilterActivity extends AppCompatActivity {
     private RelativeLayout relativeLayoutLoading;
     private LinearLayout LinearLayoutFields;
     private RecyclerView recyclerView;
-    private String type;
+    private DetailsActivity.DetailsType type;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -66,7 +65,7 @@ public class FilterActivity extends AppCompatActivity {
         setContentView(R.layout.activity_filter);
         setToolBar();
 
-        type = getIntent().getStringExtra(TYPE);
+        type = (DetailsActivity.DetailsType) getIntent().getSerializableExtra(TYPE);
 
         editTextBedrooms = findViewById(R.id.editTextBedrooms);
         editTextMinPrice = findViewById(R.id.editTextMinPrice);
@@ -77,7 +76,7 @@ public class FilterActivity extends AppCompatActivity {
         Button buttonSearch = findViewById(R.id.buttonSearch);
         recyclerView = findViewById(R.id.recyclerView);
 
-        if (type.contains(cars)) {
+        if (type == DetailsActivity.DetailsType.Cars) {
             editTextBedrooms.setVisibility(View.GONE);
             textView.setVisibility(View.GONE);
         }
@@ -91,12 +90,16 @@ public class FilterActivity extends AppCompatActivity {
                 String maxPrice = editTextMaxPrice.getText().toString();
 
                 Content content = new Content();
-                if (type.contains(apartments)) {
-                    content.search(apartments, minPrice, maxPrice, number_of_bedrooms);
-                } else if (type.contains(hotels)) {
-                    content.search(hotels, minPrice, maxPrice, number_of_bedrooms);
-                } else {
-                    content.searchCars(minPrice, maxPrice);
+                switch (type) {
+                    case Hotels:
+                        content.search(hotels, minPrice, maxPrice, number_of_bedrooms);
+                        break;
+                    case Cars:
+                        content.searchCars(minPrice, maxPrice);
+                        break;
+                    case Properties:
+                        content.search(apartments, minPrice, maxPrice, number_of_bedrooms);
+                        break;
                 }
             }
         });
@@ -221,7 +224,6 @@ public class FilterActivity extends AppCompatActivity {
                     public void onClick(View view) {
                         Intent intent = new Intent(FilterActivity.this, DetailsActivity.class);
                         intent.putExtra(ID_KEY, property.getId());
-                        intent.putExtra(IS_HOTEL, false);
                         intent.putExtra(ITEM_TYPE, DetailsActivity.DetailsType.Properties);
                         startActivity(intent);
                     }
@@ -248,6 +250,99 @@ public class FilterActivity extends AppCompatActivity {
                 } else {
                     //noinspection deprecation
                     textViewDescription.setText(Html.fromHtml(property.getDescription()));
+                }
+            }
+
+        }
+    }
+
+    public class HotelsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+
+        private ArrayList<Hotel> hotels;
+
+        private LayoutInflater inflater;
+
+        public HotelsAdapter(ArrayList<Hotel> hotels) {
+            inflater = getLayoutInflater();
+            this.hotels = hotels;
+        }
+
+        @Override
+        public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup viewGroup, int viewType) {
+            View view;
+            RecyclerView.ViewHolder holder;
+
+            //inflater your layout and pass it to view holder
+            view = inflater.inflate(R.layout.home_list_item, viewGroup, false);
+            holder = new ItemHolder(view);
+
+            return holder;
+        }
+
+        @Override
+        public void onBindViewHolder(RecyclerView.ViewHolder viewHolder, int position) {
+            StaggeredGridLayoutManager.LayoutParams layoutParams = (StaggeredGridLayoutManager.LayoutParams) viewHolder.itemView.getLayoutParams();
+            layoutParams.setFullSpan(true);
+            layoutParams.height = (int) (recyclerView.getMeasuredHeight() * 0.75);
+
+            ItemHolder itemHolder = (ItemHolder) viewHolder;
+            itemHolder.setDetails(hotels.get(position));
+        }
+
+        @Override
+        public int getItemCount() {
+            return hotels.size();
+        }
+
+
+        public class ItemHolder extends RecyclerView.ViewHolder {
+
+            ImageView imageViewCover;
+            TextView textViewPrice;
+            TextView textViewCode;
+            TextView textViewDescription;
+
+            Hotel hotel;
+
+            public ItemHolder(View itemView) {
+                super(itemView);
+
+                imageViewCover = itemView.findViewById(R.id.imageViewCover);
+                textViewPrice = itemView.findViewById(R.id.textViewPrice);
+                textViewCode = itemView.findViewById(R.id.textViewCode);
+                textViewDescription = itemView.findViewById(R.id.textViewDescription);
+
+                itemView.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        Intent intent = new Intent(FilterActivity.this, DetailsActivity.class);
+                        intent.putExtra(ID_KEY, hotel.getId());
+                        intent.putExtra(ITEM_TYPE, DetailsActivity.DetailsType.Properties);
+                        startActivity(intent);
+                    }
+                });
+            }
+
+            @SuppressLint("SetTextI18n")
+            public void setDetails(Hotel hotel) {
+                this.hotel = hotel;
+
+                if (!hotel.getCoverPic().isEmpty()) {
+                    Picasso.with(FilterActivity.this).load(hotel.getCoverPic()).
+                            placeholder(R.drawable.placeholder).fit().centerCrop().
+                            error(R.drawable.ic_warning).
+                            into(imageViewCover);
+                } else {
+                    imageViewCover.setImageResource(R.drawable.ic_warning);
+                }
+                textViewPrice.setText(String.format("%s - %s %s", hotel.getPrice(), hotel.getPriceMonth(), getResources().getString(R.string.egp)));
+                textViewCode.setText(getResources().getString(R.string.property_code) + " " + hotel.getCode());
+
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                    textViewDescription.setText(Html.fromHtml(hotel.getDescription(), Html.FROM_HTML_OPTION_USE_CSS_COLORS));
+                } else {
+                    //noinspection deprecation
+                    textViewDescription.setText(Html.fromHtml(hotel.getDescription()));
                 }
             }
 
@@ -374,6 +469,28 @@ public class FilterActivity extends AppCompatActivity {
                     recyclerView.setItemAnimator(new DefaultItemAnimator());
 
                     recyclerView.setAdapter(new PropertiesAdapter(properties));
+                } else {
+                    Toast.makeText(FilterActivity.this, getString(R.string.no_result), Toast.LENGTH_SHORT).show();
+                }
+            } else {
+                Toast.makeText(FilterActivity.this, message, Toast.LENGTH_SHORT).show();
+            }
+        }
+
+        @Override
+        protected void onPostExecuteGetHotels(ActionType actionType, boolean success, String message, ArrayList<Hotel> hotels) {
+            isLoading(false);
+            if (success) {
+                if (hotels.size() != 0) {
+                    LinearLayoutFields.setVisibility(View.GONE);
+                    recyclerView.setVisibility(View.VISIBLE);
+                    StaggeredGridLayoutManager layoutManager = new StaggeredGridLayoutManager(1, StaggeredGridLayoutManager.VERTICAL);
+                    layoutManager.setGapStrategy(StaggeredGridLayoutManager.GAP_HANDLING_MOVE_ITEMS_BETWEEN_SPANS);
+                    recyclerView.setLayoutManager(layoutManager);
+                    recyclerView.setHasFixedSize(false);
+                    recyclerView.setItemAnimator(new DefaultItemAnimator());
+
+                    recyclerView.setAdapter(new HotelsAdapter(hotels));
                 } else {
                     Toast.makeText(FilterActivity.this, getString(R.string.no_result), Toast.LENGTH_SHORT).show();
                 }

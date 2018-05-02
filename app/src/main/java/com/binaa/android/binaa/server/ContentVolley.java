@@ -5,6 +5,7 @@ import android.content.Context;
 import com.android.volley.Request;
 import com.binaa.android.binaa.models.Car;
 import com.binaa.android.binaa.models.Contact;
+import com.binaa.android.binaa.models.Hotel;
 import com.binaa.android.binaa.models.Property;
 import com.binaa.android.binaa.models.Service;
 
@@ -16,6 +17,8 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
+
+import static com.binaa.android.binaa.ReservationActivity.apartments;
 
 /**
  * Created by Muhammad on 07/29/2017
@@ -79,7 +82,7 @@ public abstract class ContentVolley extends BaseVolley {
         params.put("id", id + "");
 
         actionType = ActionType.GetHotelDetails;
-        requestAction(Request.Method.POST, url + "apartment/show", false);
+        requestAction(Request.Method.POST, url + "hotel/show", false);
     }
 
     public void getServiceDetails(int id) {
@@ -97,7 +100,11 @@ public abstract class ContentVolley extends BaseVolley {
         params.put("max_price", maxPrice);
         params.put("number_of_bedrooms", bedrooms);
 
-        actionType = ActionType.search;
+        if (type.equals(apartments)) {
+            actionType = ActionType.searchProperties;
+        } else {
+            actionType = ActionType.searchHotels;
+        }
         requestAction(Request.Method.POST, url + "search", false);
     }
 
@@ -124,6 +131,61 @@ public abstract class ContentVolley extends BaseVolley {
 
         actionType = ActionType.GetRelatedHotels;
         requestAction(Request.Method.POST, url + "related/hotels", false);
+    }
+
+    public void bookHotel(int hotel_id, String name, String email, String country, String passport, String arrival_date
+            , String leave_date, int airport_pick, int car_rent, int travel_prog, String phone_number) {
+        params = new HashMap<>();
+        params.put("hotel_id", hotel_id + "");
+        params.put("name", name);
+        params.put("email", email);
+        params.put("country", country);
+        params.put("passport_number", passport);
+        params.put("arrival_date", arrival_date);
+        params.put("leave_date", leave_date);
+        params.put("airport_pick", airport_pick + "");
+        params.put("car_rent", car_rent + "");
+        params.put("travel_prog", travel_prog + "");
+        params.put("phone_number", phone_number);
+
+        actionType = ActionType.bookHotel;
+        requestAction(Request.Method.POST, url + "store/hotel/reservation", false);
+    }
+
+    public void bookApartment(int apartment_id, String name, String email, String country, String passport, String arrival_date
+            , String leave_date, int airport_pick, int car_rent, int travel_prog, String phone_number) {
+        params = new HashMap<>();
+        params.put("apartment_id", apartment_id + "");
+        params.put("name", name);
+        params.put("email", email);
+        params.put("country", country);
+        params.put("passport_number", passport);
+        params.put("arrival_date", arrival_date);
+        params.put("leave_date", leave_date);
+        params.put("airport_pick", airport_pick + "");
+        params.put("car_rent", car_rent + "");
+        params.put("travel_prog", travel_prog + "");
+        params.put("phone_number", phone_number);
+
+        actionType = ActionType.bookApartment;
+        requestAction(Request.Method.POST, url + "store/apartment/reservation", false);
+    }
+
+    public void bookCar(int car_id, String name, String email, String country, String passport, String arrival_date
+            , String leave_date, int driver, String phone_number) {
+        params = new HashMap<>();
+        params.put("car_id", car_id + "");
+        params.put("name", name);
+        params.put("email", email);
+        params.put("country", country);
+        params.put("passport_number", passport);
+        params.put("arrival_date", arrival_date);
+        params.put("leave_date", leave_date);
+        params.put("airport_pick", driver + "");
+        params.put("phone_number", phone_number);
+
+        actionType = ActionType.bookCar;
+        requestAction(Request.Method.POST, url + "store/car/reservation", false);
     }
 
     public void addRegistration(String token) {
@@ -161,10 +223,8 @@ public abstract class ContentVolley extends BaseVolley {
 
         switch (action) {
             case GetApartments:
-            case GetHotels:
             case GetRelatedApartment:
-            case GetRelatedHotels:
-            case search:
+            case searchProperties:
                 ArrayList<Property> properties = new ArrayList<>();
                 dataArray = jsonObject.optJSONArray("data");
                 for (int i = 0; i < dataArray.length(); i++) {
@@ -184,12 +244,39 @@ public abstract class ContentVolley extends BaseVolley {
 
                 onPostExecuteGetProperties(action, success, message, properties);
                 break;
+            case GetHotels:
+            case searchHotels:
+            case GetRelatedHotels:
+                ArrayList<Hotel> hotels = new ArrayList<>();
+                dataArray = jsonObject.optJSONArray("data");
+                for (int i = 0; i < dataArray.length(); i++) {
+                    JSONObject hotelItem = dataArray.getJSONObject(i);
+                    Hotel hotel = new Hotel(hotelItem);
+                    hotels.add(hotel);
+                }
+
+                Collections.sort(hotels, new Comparator<Hotel>() {
+                    @Override
+                    public int compare(Hotel hotel1, Hotel hotel2) {
+                        int code1 = Integer.parseInt(hotel1.getCode());
+                        int code2 = Integer.parseInt(hotel2.getCode());
+                        return code1 - code2;
+                    }
+                });
+
+                onPostExecuteGetHotels(action, success, message, hotels);
+                break;
             case GetPropertyDetails:
-            case GetHotelDetails:
                 dataObject = jsonObject.optJSONObject("data");
                 Property property = new Property(dataObject);
 
                 onPostExecuteGetPropertyDetails(action, success, message, property);
+                break;
+            case GetHotelDetails:
+                dataObject = jsonObject.optJSONObject("data");
+                Hotel hotel = new Hotel(dataObject);
+
+                onPostExecuteGetHotelDetails(action, success, message, hotel);
                 break;
             case searchCars:
             case GetCars:
@@ -239,6 +326,9 @@ public abstract class ContentVolley extends BaseVolley {
                 onPostExecuteAbout(action, success, message, about);
                 break;
             case addRegistration:
+            case bookCar:
+            case bookHotel:
+            case bookApartment:
                 onPostExecute(action, success, message);
                 break;
         }
@@ -251,13 +341,18 @@ public abstract class ContentVolley extends BaseVolley {
 
         switch (action) {
             case GetApartments:
-            case GetHotels:
             case GetRelatedApartment:
-            case GetRelatedHotels:
-            case search:
+            case searchProperties:
                 onPostExecuteGetProperties(action, false, message, null);
                 break;
+            case GetHotels:
+            case GetRelatedHotels:
+            case searchHotels:
+                onPostExecuteGetHotels(action, false, message, null);
+                break;
             case GetPropertyDetails:
+                onPostExecuteGetHotelDetails(action, false, message, null);
+                break;
             case GetHotelDetails:
                 onPostExecuteGetPropertyDetails(action, false, message, null);
                 break;
@@ -281,6 +376,9 @@ public abstract class ContentVolley extends BaseVolley {
                 onPostExecuteAbout(action, success, message, null);
                 break;
             case addRegistration:
+            case bookCar:
+            case bookHotel:
+            case bookApartment:
                 onPostExecute(action, success, message);
                 break;
         }
@@ -290,6 +388,9 @@ public abstract class ContentVolley extends BaseVolley {
     }
 
     protected void onPostExecuteGetPropertyDetails(ActionType actionType, boolean success, String message, Property property) {
+    }
+
+    protected void onPostExecuteGetHotelDetails(ActionType actionType, boolean success, String message, Hotel hotel) {
     }
 
     protected void onPostExecuteGetCarDetails(ActionType actionType, boolean success, String message, Car car) {
@@ -307,6 +408,9 @@ public abstract class ContentVolley extends BaseVolley {
     protected void onPostExecuteGetProperties(ActionType actionType, boolean success, String message, ArrayList<Property> properties) {
     }
 
+    protected void onPostExecuteGetHotels(ActionType actionType, boolean success, String message, ArrayList<Hotel> hotels) {
+    }
+
     protected void onPostExecuteGetCars(ActionType actionType, boolean success, String message, ArrayList<Car> cars) {
     }
 
@@ -316,6 +420,7 @@ public abstract class ContentVolley extends BaseVolley {
     public enum ActionType implements BaseVolley.ActionType {
         GetApartments, GetPropertyDetails, GetHotels, GetHotelDetails,
         GetCars, GetCarDetails, GetServices, GetServiceDetails, GetRelatedApartment,
-        GetRelatedHotels, search, getContacts, about, addRegistration, searchCars
+        GetRelatedHotels, searchHotels, searchProperties, getContacts, about, addRegistration,
+        searchCars, bookCar, bookHotel, bookApartment
     }
 }

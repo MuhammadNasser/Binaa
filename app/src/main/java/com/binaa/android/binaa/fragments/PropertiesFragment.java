@@ -28,7 +28,6 @@ import com.squareup.picasso.Picasso;
 import java.util.ArrayList;
 
 import static com.binaa.android.binaa.DetailsActivity.ID_KEY;
-import static com.binaa.android.binaa.DetailsActivity.IS_HOTEL;
 import static com.binaa.android.binaa.DetailsActivity.ITEM_TYPE;
 
 
@@ -152,8 +151,6 @@ public class PropertiesFragment extends Fragment {
                     public void onClick(View view) {
                         Intent intent = new Intent(activity, DetailsActivity.class);
                         intent.putExtra(ID_KEY, property.getId());
-
-                        intent.putExtra(IS_HOTEL, false);
                         intent.putExtra(ITEM_TYPE, DetailsActivity.DetailsType.Properties);
                         startActivity(intent);
                     }

@@ -39,9 +39,6 @@ import com.google.firebase.analytics.FirebaseAnalytics;
 import java.util.Locale;
 
 import static com.binaa.android.binaa.FilterActivity.TYPE;
-import static com.binaa.android.binaa.FilterActivity.apartments;
-import static com.binaa.android.binaa.FilterActivity.cars;
-import static com.binaa.android.binaa.FilterActivity.hotels;
 
 
 public class MainActivity extends AppCompatActivity implements TabLayout.OnTabSelectedListener, NavigationDrawerFragment.NavigationDrawerCallbacks, View.OnClickListener {
@@ -150,6 +147,7 @@ public class MainActivity extends AppCompatActivity implements TabLayout.OnTabSe
         // Set up the drawer.
         drawerLayout = findViewById(R.id.drawer_layout);
         mNavigationDrawerFragment.setUp(R.id.navigation_drawer, drawerLayout);
+        drawerLayout.closeDrawers();
     }
 
     @Override
@@ -300,13 +298,13 @@ public class MainActivity extends AppCompatActivity implements TabLayout.OnTabSe
             case R.id.filter_menu_item:
                 Intent intent = new Intent(MainActivity.this, FilterActivity.class);
                 if (currentFragment instanceof PropertiesFragment) {
-                    intent.putExtra(TYPE, apartments);
+                    intent.putExtra(TYPE, DetailsActivity.DetailsType.Properties);
                     startActivity(intent);
                 } else if (currentFragment instanceof HotelsFragment) {
-                    intent.putExtra(TYPE, hotels);
+                    intent.putExtra(TYPE, DetailsActivity.DetailsType.Hotels);
                     startActivity(intent);
                 } else if (currentFragment instanceof CarsFragment) {
-                    intent.putExtra(TYPE, cars);
+                    intent.putExtra(TYPE, DetailsActivity.DetailsType.Cars);
                     startActivity(intent);
                 }
                 break;

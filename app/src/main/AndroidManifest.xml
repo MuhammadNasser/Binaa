@@ -21,6 +21,7 @@
         <activity android:name="com.binaa.android.binaa.MainActivity" />
         <activity android:name="com.binaa.android.binaa.DetailsActivity" />
         <activity android:name=".FilterActivity" />
+        <activity android:name=".ReservationActivity" />
 
         <service android:name="com.binaa.android.binaa.utils.MyFirebaseMessagingService">
             <intent-filter>

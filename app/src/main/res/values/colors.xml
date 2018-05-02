@@ -3,6 +3,7 @@
     <color name="colorPrimary">#073370</color>
     <color name="colorPrimaryDark">#06295b</color>
     <color name="white">#ffffff</color>
+    <color name="whiteFA">#fafafa</color>
     <color name="whiteHint">#90ffffff</color>
     <color name="blue60">#90028cc5</color>
 
@@ -15,7 +16,7 @@
     <color name="grayLight">#b6b6b6</color>
     <color name="grayDark">#9da0a0</color>
 
-    <color name="green">#4cd964</color>
+    <color name="green">#5CB85C</color>
     <color name="red">#80FF0000</color>
     <color name="black60">#90000000</color>
 </resources>

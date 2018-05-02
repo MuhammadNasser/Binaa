@@ -29,6 +29,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.binaa.android.binaa.models.Car;
+import com.binaa.android.binaa.models.Hotel;
 import com.binaa.android.binaa.models.Image;
 import com.binaa.android.binaa.models.Property;
 import com.binaa.android.binaa.models.Service;
@@ -44,6 +45,9 @@ import com.squareup.picasso.Picasso;
 import java.util.ArrayList;
 import java.util.Locale;
 
+import static com.binaa.android.binaa.ReservationActivity.ID;
+import static com.binaa.android.binaa.ReservationActivity.TYPE;
+
 /**
  * Created by Muhammad on 8/6/2017
  */
@@ -51,12 +55,10 @@ import java.util.Locale;
 public class DetailsActivity extends AppCompatActivity {
 
     public static String ITEM_TYPE = "item_type";
-    public static String IS_HOTEL = "isHotel";
     public static String ID_KEY = "id";
 
 
     private final String TAG = this.toString();
-    boolean isHotel;
     private TextView textViewDescription;
     private TextView textViewPrice;
     private TextView textViewCode;
@@ -67,7 +69,9 @@ public class DetailsActivity extends AppCompatActivity {
     private ImageView imageViewFacebook;
     private ImageView imageViewTwitter;
     private ImageView imageViewInstagram;
+    private View view;
     private Button buttonCall;
+    private Button buttonReserve;
     private ViewPager viewPager;
     private RelativeLayout relativeLayoutLoading;
     private RelativeLayout relativeLayoutRelated;
@@ -97,6 +101,10 @@ public class DetailsActivity extends AppCompatActivity {
         imageViewInstagram = findViewById(R.id.imageViewInstagram);
 
         buttonCall = findViewById(R.id.buttonCall);
+        buttonReserve = findViewById(R.id.buttonReserve);
+
+        view = findViewById(R.id.view);
+
         viewPager = findViewById(R.id.viewPager);
         pagerSlidingTabStrip = findViewById(R.id.pagerSlidingTabStrip);
         recycler = findViewById(R.id.recycler);
@@ -108,7 +116,6 @@ public class DetailsActivity extends AppCompatActivity {
 
         detailsType = (DetailsType) getIntent().getSerializableExtra(ITEM_TYPE);
         id = getIntent().getIntExtra(ID_KEY, 0);
-        isHotel = getIntent().getBooleanExtra(IS_HOTEL, false);
 
         initializeData();
 
@@ -126,11 +133,10 @@ public class DetailsActivity extends AppCompatActivity {
         Content content = new Content();
         switch (detailsType) {
             case Properties:
-                if (isHotel) {
-                    content.getHotelDetails(id);
-                } else {
-                    content.getPropertyDetails(id);
-                }
+                content.getPropertyDetails(id);
+                break;
+            case Hotels:
+                content.getHotelDetails(id);
                 break;
             case Cars:
                 content.getCarDetails(id);
@@ -181,7 +187,7 @@ public class DetailsActivity extends AppCompatActivity {
     }
 
     public enum DetailsType {
-        Properties, Cars, Services
+        Properties, Hotels, Cars, Services
     }
 
     private class Listeners implements View.OnClickListener {
@@ -192,6 +198,9 @@ public class DetailsActivity extends AppCompatActivity {
             this.link = link;
         }
 
+        public Listeners() {
+        }
+
         @RequiresApi(api = Build.VERSION_CODES.KITKAT)
         @Override
         public void onClick(View v) {
@@ -199,7 +208,17 @@ public class DetailsActivity extends AppCompatActivity {
             String facebook = "http://www.facebook.com";
             String twitter = "http://www.twitter.com";
             String instagram = "http://www.instagram.com";
-            if (v == imageViewFacebook) {
+            if (v == buttonCall) {
+                if (link.contains("/")) {
+                    String[] strings = link.split("/");
+                    BaseDialogHolder dialogHolder = new PhonesDialogHolder(DetailsActivity.this, strings);
+                    dialogHolder.showDialog();
+                } else {
+                    Intent intentCall = new Intent(Intent.ACTION_DIAL);
+                    intentCall.setData(Uri.parse("tel:" + link));
+                    startActivity(intentCall);
+                }
+            } else if (v == imageViewFacebook) {
                 if (!link.isEmpty() || link != null) {
                     intent.setData(Uri.parse("http://" + link));
                     startActivity(intent);
@@ -223,16 +242,11 @@ public class DetailsActivity extends AppCompatActivity {
                     intent.setData(Uri.parse(instagram));
                     startActivity(intent);
                 }
-            } else {
-                if (link.contains("/")) {
-                    String[] strings = link.split("/");
-                    BaseDialogHolder dialogHolder = new PhonesDialogHolder(DetailsActivity.this, strings);
-                    dialogHolder.showDialog();
-                } else {
-                    Intent intentCall = new Intent(Intent.ACTION_DIAL);
-                    intentCall.setData(Uri.parse("tel:" + link));
-                    startActivity(intentCall);
-                }
+            } else if (v == buttonReserve) {
+                Intent intent1 = new Intent(DetailsActivity.this, ReservationActivity.class);
+                intent1.putExtra(TYPE, detailsType);
+                intent1.putExtra(ID, id);
+                startActivity(intent1);
             }
         }
     }
@@ -335,6 +349,104 @@ public class DetailsActivity extends AppCompatActivity {
         }
     }
 
+    public class RelatedHotelsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+
+        private ArrayList<Hotel> hotels;
+
+
+        private LayoutInflater inflater;
+
+        public RelatedHotelsAdapter(ArrayList<Hotel> hotels) {
+
+            inflater = getLayoutInflater();
+            this.hotels = hotels;
+        }
+
+        @Override
+        public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup viewGroup, int viewType) {
+            View view;
+            RecyclerView.ViewHolder holder;
+
+            //inflater your layout and pass it to view holder
+            view = inflater.inflate(R.layout.related_item, viewGroup, false);
+            holder = new ItemHolder(view);
+
+            return holder;
+        }
+
+        @Override
+        public void onBindViewHolder(RecyclerView.ViewHolder viewHolder, int position) {
+
+            StaggeredGridLayoutManager.LayoutParams layoutParams = (StaggeredGridLayoutManager.LayoutParams) viewHolder.itemView.getLayoutParams();
+            layoutParams.setFullSpan(true);
+
+            layoutParams.width = (int) (recycler.getMeasuredWidth() / 1.5);
+            layoutParams.height = StaggeredGridLayoutManager.LayoutParams.MATCH_PARENT;
+
+            ItemHolder itemHolder = (ItemHolder) viewHolder;
+            itemHolder.setDetails(hotels.get(position));
+        }
+
+        @Override
+        public int getItemCount() {
+            return hotels.size();
+        }
+
+        public class ItemHolder extends RecyclerView.ViewHolder {
+
+            ImageView imageViewCover;
+            TextView textViewPrice;
+            TextView textViewCode;
+            TextView textViewDescription;
+
+            Hotel hotel;
+
+            public ItemHolder(View itemView) {
+                super(itemView);
+
+                imageViewCover = itemView.findViewById(R.id.imageViewCover);
+                textViewPrice = itemView.findViewById(R.id.textViewPrice);
+                textViewCode = itemView.findViewById(R.id.textViewCode);
+                textViewDescription = itemView.findViewById(R.id.textViewDescription);
+
+                itemView.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        Intent intent = new Intent(DetailsActivity.this, DetailsActivity.class);
+                        intent.putExtra(ID_KEY, hotel.getId());
+                        intent.putExtra(ITEM_TYPE, DetailsType.Hotels);
+                        startActivity(intent);
+                        finish();
+                    }
+                });
+            }
+
+            public void setDetails(Hotel hotel) {
+                this.hotel = hotel;
+
+                if (!hotel.getCoverPic().isEmpty()) {
+                    Picasso.with(getApplicationContext()).load(hotel.getCoverPic()).
+                            placeholder(R.drawable.placeholder).fit().centerCrop().fit().centerCrop().
+                            error(R.drawable.ic_warning).
+                            into(imageViewCover);
+                } else {
+                    imageViewCover.setImageResource(R.drawable.ic_warning);
+                }
+
+                textViewPrice.setText(String.format("%s - %s %s", hotel.getPrice(), hotel.getPriceMonth(), getResources().getString(R.string.egp)));
+                textViewCode.setText(String.format("%s %s", getResources().getString(R.string.property_code), hotel.getCode()));
+
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                    textViewDescription.setText(Html.fromHtml(hotel.getDescription(), Html.FROM_HTML_OPTION_USE_CSS_COLORS));
+                } else {
+                    //noinspection deprecation
+                    textViewDescription.setText(Html.fromHtml(hotel.getDescription()));
+                }
+            }
+
+        }
+    }
+
 
     private class PageAdapter extends PagerAdapter implements PagerSlidingTabStrip.IconTabProvider {
 
@@ -425,15 +537,34 @@ public class DetailsActivity extends AppCompatActivity {
         }
 
         @Override
+        protected void onPostExecuteGetHotels(ActionType actionType, boolean success, String message, ArrayList<Hotel> hotels) {
+            isLoading(false);
+            if (success) {
+                relativeLayoutRelated.setVisibility(View.VISIBLE);
+
+                DisplayMetrics metrics = new DisplayMetrics();
+                getWindowManager().getDefaultDisplay().getMetrics(metrics);
+                float windowY = metrics.heightPixels;
+
+                recycler.getLayoutParams().height = (int) (windowY / 2.5);
+
+                StaggeredGridLayoutManager layoutManager = new StaggeredGridLayoutManager(1, StaggeredGridLayoutManager.HORIZONTAL);
+                layoutManager.setGapStrategy(StaggeredGridLayoutManager.GAP_HANDLING_MOVE_ITEMS_BETWEEN_SPANS);
+                recycler.setLayoutManager(layoutManager);
+                recycler.setHasFixedSize(false);
+                recycler.setItemAnimator(new DefaultItemAnimator());
+                recycler.setAdapter(new RelatedHotelsAdapter(hotels));
+
+            } else {
+                Toast.makeText(getApplicationContext(), message, Toast.LENGTH_SHORT).show();
+            }
+        }
+
+        @Override
         protected void onPostExecuteGetPropertyDetails(ActionType actionType, boolean success, String message, Property property) {
             isLoading(false);
             if (success) {
-                Content content = new Content();
-                if (isHotel) {
-                    content.getRelatedHotels(property.getId());
-                } else {
-                    content.getRelatedApartments(property.getId());
-                }
+                getRelatedApartments(property.getId());
 
                 textViewPrice.setText(String.format("%s - %s %s", property.getPrice(), property.getPriceMonth(), getResources().getString(R.string.egp)));
                 textViewCode.setText(String.format("%s %s", getResources().getString(R.string.property_code), property.getCode()));
@@ -448,6 +579,7 @@ public class DetailsActivity extends AppCompatActivity {
 
 
                 buttonCall.setOnClickListener(new Listeners(property.getPhoneNumber()));
+                buttonReserve.setOnClickListener(new Listeners());
 
 
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
@@ -458,6 +590,50 @@ public class DetailsActivity extends AppCompatActivity {
                 }
 
                 viewPager.setAdapter(new PageAdapter(property.getImagesLinks()));
+
+                if (Build.VERSION.SDK_INT > 22) {
+                    pagerSlidingTabStrip.setIndicatorColor(getResources().getColor(android.R.color.transparent, null));
+                } else {
+                    // noinspection deprecation
+                    getResources().getColor(android.R.color.transparent);
+                }
+                pagerSlidingTabStrip.setSelectedTabSrc(R.drawable.circle_gray_dark);
+                pagerSlidingTabStrip.setViewPager(viewPager);
+            } else {
+                Toast.makeText(getApplicationContext(), message, Toast.LENGTH_SHORT).show();
+            }
+        }
+
+        @Override
+        protected void onPostExecuteGetHotelDetails(ActionType actionType, boolean success, String message, Hotel hotel) {
+            isLoading(false);
+            if (success) {
+                getRelatedHotels(hotel.getId());
+
+                textViewPrice.setText(String.format("%s - %s %s", hotel.getPrice(), hotel.getPriceMonth(), getResources().getString(R.string.egp)));
+                textViewCode.setText(String.format("%s %s", getResources().getString(R.string.property_code), hotel.getCode()));
+                textViewArea.setText(String.format("%s%s%s", getString(R.string.area), hotel.getArea(), getString(R.string.m_)));
+                textViewBedrooms.setText(String.format("%s %s", getString(R.string.bedrooms), hotel.getBedrooms()));
+                textViewBathrooms.setText(String.format("%s %s", getString(R.string.bathrooms), hotel.getBathrooms()));
+                relativeLayoutDetails.setVisibility(View.VISIBLE);
+
+                imageViewInstagram.setOnClickListener(new Listeners(hotel.getInstagram()));
+                imageViewFacebook.setOnClickListener(new Listeners(hotel.getFacebook()));
+                imageViewTwitter.setOnClickListener(new Listeners(hotel.getTwitter()));
+
+
+                buttonCall.setOnClickListener(new Listeners(hotel.getPhoneNumber()));
+                buttonReserve.setOnClickListener(new Listeners());
+
+
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                    textViewDescription.setText(Html.fromHtml(hotel.getDescription(), Html.FROM_HTML_OPTION_USE_CSS_COLORS));
+                } else {
+                    //noinspection deprecation
+                    textViewDescription.setText(Html.fromHtml(hotel.getDescription()));
+                }
+
+                viewPager.setAdapter(new PageAdapter(hotel.getImagesLinks()));
 
                 if (Build.VERSION.SDK_INT > 22) {
                     pagerSlidingTabStrip.setIndicatorColor(getResources().getColor(android.R.color.transparent, null));
@@ -488,6 +664,7 @@ public class DetailsActivity extends AppCompatActivity {
                     textViewDescription.setText(Html.fromHtml(car.getDescription()));
                 }
                 buttonCall.setOnClickListener(new Listeners("01027567799"));
+                buttonReserve.setOnClickListener(new Listeners());
 
                 viewPager.setAdapter(new PageAdapter(car.getImages()));
 
@@ -521,6 +698,12 @@ public class DetailsActivity extends AppCompatActivity {
                 }
 
                 buttonCall.setOnClickListener(new Listeners("01027567799"));
+                buttonReserve.setVisibility(View.GONE);
+                view.setVisibility(View.GONE);
+
+                RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams) buttonCall.getLayoutParams();
+                layoutParams.addRule(RelativeLayout.CENTER_HORIZONTAL, RelativeLayout.TRUE);
+                buttonCall.setLayoutParams(layoutParams);
 
                 ArrayList<Image> images = new ArrayList<>();
                 Image image = new Image();

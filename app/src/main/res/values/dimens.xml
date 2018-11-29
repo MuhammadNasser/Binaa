@@ -6,7 +6,7 @@
     <dimen name="textSizeLarge">19sp</dimen>
     <dimen name="textSizeXLarge">22sp</dimen>
 
-    <dimen name="menu_item_pading">20dp</dimen>
+    <dimen name="menu_item_pading">5dp</dimen>
     <dimen name="navigation_drawer_width">250dp</dimen>
     <dimen name="pager_circle_radius">10dp</dimen>
     <dimen name="profileTabItemHeight">50dp</dimen>

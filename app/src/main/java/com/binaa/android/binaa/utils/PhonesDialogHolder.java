@@ -37,7 +37,6 @@ public class PhonesDialogHolder extends BaseDialogHolder {
     }
 
     private class Listener implements View.OnClickListener {
-
         int i;
 
         public Listener(int i) {

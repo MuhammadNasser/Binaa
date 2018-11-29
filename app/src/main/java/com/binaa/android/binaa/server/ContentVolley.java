@@ -3,9 +3,11 @@ package com.binaa.android.binaa.server;
 import android.content.Context;
 
 import com.android.volley.Request;
+import com.binaa.android.binaa.models.BaseModel;
 import com.binaa.android.binaa.models.Car;
 import com.binaa.android.binaa.models.Contact;
 import com.binaa.android.binaa.models.Hotel;
+import com.binaa.android.binaa.models.Offer;
 import com.binaa.android.binaa.models.Property;
 import com.binaa.android.binaa.models.Service;
 
@@ -36,9 +38,31 @@ public abstract class ContentVolley extends BaseVolley {
         requestAction(Request.Method.POST, url + "apartments", false);
     }
 
-    public void getHotels() {
+    public void getHotels(String priceFrom, String priceTo, String govId, String cityId, String numberOfBedrooms) {
         actionType = ActionType.GetHotels;
+        params = new HashMap<>();
+        params.put("price_from", priceFrom);
+        params.put("price_to", priceTo);
+        params.put("governorate_id", govId);
+        params.put("city_id", cityId);
+        params.put("number_of_bedrooms", numberOfBedrooms);
+
         requestAction(Request.Method.POST, url + "hotels", false);
+    }
+
+    public void getCities() {
+        actionType = ActionType.getCities;
+        requestAction(Request.Method.GET, url + "all/cities", false);
+    }
+
+    public void getOffers() {
+        actionType = ActionType.getOffers;
+        requestAction(Request.Method.GET, url + "offers", false);
+    }
+
+    public void getGovs() {
+        actionType = ActionType.getGovs;
+        requestAction(Request.Method.GET, url + "all/governorates", false);
     }
 
     public void getCars() {
@@ -325,6 +349,33 @@ public abstract class ContentVolley extends BaseVolley {
 
                 onPostExecuteAbout(action, success, message, about);
                 break;
+            case getCities:
+                dataArray = jsonObject.getJSONArray("data");
+                ArrayList<BaseModel> cities = new ArrayList<>();
+                for (int i = 0; i < dataArray.length(); i++) {
+                    BaseModel city = new BaseModel(dataArray.getJSONObject(i));
+                    cities.add(city);
+                }
+                onPostExecuteGetCities(action, success, message, cities);
+                break;
+            case getGovs:
+                dataArray = jsonObject.getJSONArray("data");
+                ArrayList<BaseModel> govs = new ArrayList<>();
+                for (int i = 0; i < dataArray.length(); i++) {
+                    BaseModel gov = new BaseModel(dataArray.getJSONObject(i));
+                    govs.add(gov);
+                }
+                onPostExecuteGetGovs(action, success, message, govs);
+                break;
+            case getOffers:
+                dataArray = jsonObject.getJSONArray("data");
+                ArrayList<Offer> offers = new ArrayList<>();
+                for (int i = 0; i < dataArray.length(); i++) {
+                    Offer offer = new Offer(dataArray.getJSONObject(i));
+                    offers.add(offer);
+                }
+                onPostExecuteOffers(action, success, message, offers);
+                break;
             case addRegistration:
             case bookCar:
             case bookHotel:
@@ -375,6 +426,15 @@ public abstract class ContentVolley extends BaseVolley {
             case about:
                 onPostExecuteAbout(action, success, message, null);
                 break;
+            case getGovs:
+                onPostExecuteGetGovs(action, success, message, null);
+                break;
+            case getCities:
+                onPostExecuteGetCities(action, success, message, null);
+                break;
+            case getOffers:
+                onPostExecuteOffers(action, success, message, null);
+                break;
             case addRegistration:
             case bookCar:
             case bookHotel:
@@ -417,10 +477,19 @@ public abstract class ContentVolley extends BaseVolley {
     protected void onPostExecuteGetServices(ActionType actionType, boolean success, String message, ArrayList<Service> services) {
     }
 
+    protected void onPostExecuteGetCities(ActionType actionType, boolean success, String message, ArrayList<BaseModel> cities) {
+    }
+
+    protected void onPostExecuteGetGovs(ActionType actionType, boolean success, String message, ArrayList<BaseModel> govs) {
+    }
+
+    protected void onPostExecuteOffers(ActionType actionType, boolean success, String message, ArrayList<Offer> offers) {
+    }
+
     public enum ActionType implements BaseVolley.ActionType {
         GetApartments, GetPropertyDetails, GetHotels, GetHotelDetails,
         GetCars, GetCarDetails, GetServices, GetServiceDetails, GetRelatedApartment,
         GetRelatedHotels, searchHotels, searchProperties, getContacts, about, addRegistration,
-        searchCars, bookCar, bookHotel, bookApartment
+        searchCars, bookCar, bookHotel, bookApartment, getCities, getGovs, getOffers
     }
 }

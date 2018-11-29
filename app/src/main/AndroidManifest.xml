@@ -22,6 +22,7 @@
         <activity android:name="com.binaa.android.binaa.DetailsActivity" />
         <activity android:name=".FilterActivity" />
         <activity android:name=".ReservationActivity" />
+        <activity android:name=".FullScreenViewActivity" />
 
         <service android:name="com.binaa.android.binaa.utils.MyFirebaseMessagingService">
             <intent-filter>

@@ -64,10 +64,14 @@
     <string name="messageCar">Car Reservation has been sent, Please check your email</string>
     <string name="navigation_drawer_open">Car Reservation has been sent, Please check your email</string>
     <string name="navigation_drawer_close">Car Reservation has been sent, Please check your email</string>
+    <string name="close">Close</string>
+    <string name="City">City</string>
+    <string name="state">State</string>
 
     <string-array name="slideMenuItems">
         <item>Home</item>
         <item>Services</item>
+        <item>Privacy Policy</item>
         <item>About Us</item>
         <item>Contact Us</item>
     </string-array>

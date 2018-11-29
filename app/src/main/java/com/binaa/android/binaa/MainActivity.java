@@ -29,12 +29,12 @@ import com.binaa.android.binaa.fragments.CarsFragment;
 import com.binaa.android.binaa.fragments.ContactUsFragment;
 import com.binaa.android.binaa.fragments.HotelsFragment;
 import com.binaa.android.binaa.fragments.NavigationDrawerFragment;
+import com.binaa.android.binaa.fragments.PrivacyFragment;
 import com.binaa.android.binaa.fragments.PropertiesFragment;
 import com.binaa.android.binaa.fragments.ServicesFragment;
 import com.binaa.android.binaa.server.Constants;
 import com.binaa.android.binaa.utils.ApplicationBase;
 import com.binaa.android.binaa.utils.MyContextWrapper;
-import com.google.firebase.analytics.FirebaseAnalytics;
 
 import java.util.Locale;
 
@@ -84,9 +84,6 @@ public class MainActivity extends AppCompatActivity implements TabLayout.OnTabSe
         } else {
             replaceFragment(-1);
         }
-
-        FirebaseAnalytics firebaseAnalytics = FirebaseAnalytics.getInstance(this);
-        firebaseAnalytics.setAnalyticsCollectionEnabled(true);
 
         tabLayout.addOnTabSelectedListener(this);
     }
@@ -209,11 +206,7 @@ public class MainActivity extends AppCompatActivity implements TabLayout.OnTabSe
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.home_menu, menu);
-        if (currentFragment instanceof HotelsFragment || currentFragment instanceof PropertiesFragment) {
-            return super.onCreateOptionsMenu(menu);
-        } else {
-            return false;
-        }
+        return (currentFragment instanceof HotelsFragment || currentFragment instanceof PropertiesFragment) && super.onCreateOptionsMenu(menu);
     }
 
     private Drawable getFromDrawables(int resId) {
@@ -268,12 +261,18 @@ public class MainActivity extends AppCompatActivity implements TabLayout.OnTabSe
                 fragmentTitle = slideMenuItems[position - 1];
                 break;
             case 3:
-                fragment = new AboutUsFragment();
+                fragment = new PrivacyFragment();
                 tabLayout.setVisibility(View.GONE);
 
                 fragmentTitle = slideMenuItems[position - 1];
                 break;
             case 4:
+                fragment = new AboutUsFragment();
+                tabLayout.setVisibility(View.GONE);
+
+                fragmentTitle = slideMenuItems[position - 1];
+                break;
+            case 5:
                 fragment = new ContactUsFragment();
                 tabLayout.setVisibility(View.GONE);
 
@@ -331,12 +330,22 @@ public class MainActivity extends AppCompatActivity implements TabLayout.OnTabSe
         if (currentFragment instanceof PropertiesFragment) {
             super.onBackPressed();
         } else {
+            TabLayout.Tab tab = tabLayout.getTabAt(0);
+            if (tab != null) {
+                tab.select();
+            }
             replaceFragment(0);
         }
     }
 
     @Override
     public void onNavigationDrawerItemSelected(int position) {
+        if (position == 0 || position == 1) {
+            TabLayout.Tab tab = tabLayout.getTabAt(position);
+            if (tab != null) {
+                tab.select();
+            }
+        }
         replaceFragment(position);
     }
 

@@ -39,7 +39,6 @@ import com.binaa.android.binaa.utils.BaseDialogHolder;
 import com.binaa.android.binaa.utils.MyContextWrapper;
 import com.binaa.android.binaa.utils.PhonesDialogHolder;
 import com.binaa.android.binaa.views.PagerSlidingTabStrip;
-import com.google.firebase.analytics.FirebaseAnalytics;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -119,8 +118,6 @@ public class DetailsActivity extends AppCompatActivity {
 
         initializeData();
 
-        FirebaseAnalytics firebaseAnalytics = FirebaseAnalytics.getInstance(this);
-        firebaseAnalytics.setAnalyticsCollectionEnabled(true);
     }
 
     @Override
@@ -479,7 +476,7 @@ public class DetailsActivity extends AppCompatActivity {
         }
 
         @Override
-        public Object instantiateItem(ViewGroup container, int position) {
+        public Object instantiateItem(ViewGroup container, final int position) {
 
             View itemView = inflater.inflate(R.layout.header_item, container, false);
 
@@ -491,6 +488,16 @@ public class DetailsActivity extends AppCompatActivity {
                     into(imageViewCover);
 
             container.addView(itemView);
+
+            imageViewCover.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Intent intent = new Intent(DetailsActivity.this, FullScreenViewActivity.class);
+                    intent.putExtra("position", position);
+                    intent.putExtra("images", images);
+                    startActivity(intent);
+                }
+            });
 
             return itemView;
         }

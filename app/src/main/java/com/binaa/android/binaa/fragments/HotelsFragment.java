@@ -14,14 +14,20 @@ import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.binaa.android.binaa.DetailsActivity;
 import com.binaa.android.binaa.MainActivity;
 import com.binaa.android.binaa.R;
+import com.binaa.android.binaa.models.BaseModel;
 import com.binaa.android.binaa.models.Hotel;
 import com.binaa.android.binaa.server.ContentVolley;
 import com.squareup.picasso.Picasso;
@@ -43,7 +49,15 @@ public class HotelsFragment extends Fragment {
     RecyclerView recyclerView;
     RelativeLayout relativeLayoutComingSoon;
     Parcelable savedRecyclerLayoutState;
+    Spinner spinnerCities;
+    Spinner spinnerGovs;
+    EditText editTextBedrooms;
+    EditText editTextMinPrice;
+    EditText editTextMaxPrice;
+    Button buttonSearch;
     private MainActivity activity;
+    String cityId;
+    String govId;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -53,6 +67,12 @@ public class HotelsFragment extends Fragment {
         activity = (MainActivity) getActivity();
 
         recyclerView = view.findViewById(R.id.recycler);
+        spinnerCities = view.findViewById(R.id.spinnerCities);
+        spinnerGovs = view.findViewById(R.id.spinnerGovs);
+        editTextBedrooms = view.findViewById(R.id.editTextBedrooms);
+        editTextMinPrice = view.findViewById(R.id.editTextMinPrice);
+        editTextMaxPrice = view.findViewById(R.id.editTextMaxPrice);
+        buttonSearch = view.findViewById(R.id.buttonSearch);
         relativeLayoutComingSoon = view.findViewById(R.id.relativeLayoutComingSoon);
 
         StaggeredGridLayoutManager layoutManager = new StaggeredGridLayoutManager(1, StaggeredGridLayoutManager.VERTICAL);
@@ -61,9 +81,19 @@ public class HotelsFragment extends Fragment {
         recyclerView.setHasFixedSize(false);
         recyclerView.setItemAnimator(new DefaultItemAnimator());
 
-        Content content = new Content();
-        content.getHotels();
+        final Content content = new Content();
+        content.getHotels("", "", "", "", "");
+        buttonSearch.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                content.getHotels(editTextMinPrice.getText().toString(), editTextMaxPrice.getText().toString(), govId, cityId, editTextBedrooms.getText().toString());
+            }
+        });
 
+        Content content1 = new Content();
+        content1.getCities();
+        Content content2 = new Content();
+        content2.getGovs();
         return view;
     }
 
@@ -184,7 +214,10 @@ public class HotelsFragment extends Fragment {
         }
     }
 
-    private class Content extends ContentVolley {
+    private class Content extends ContentVolley implements AdapterView.OnItemSelectedListener {
+
+        private ArrayList<BaseModel> govs;
+        private ArrayList<BaseModel> cities;
 
         public Content() {
             super(TAG, activity);
@@ -208,6 +241,64 @@ public class HotelsFragment extends Fragment {
             } else {
                 Toast.makeText(activity, message, Toast.LENGTH_SHORT).show();
             }
+        }
+
+        @Override
+        protected void onPostExecuteGetCities(ActionType actionType, boolean success, String message, ArrayList<BaseModel> cities) {
+            this.cities = cities;
+            activity.isLoading(false);
+            if (success) {
+                ArrayList<String> items = new ArrayList<>();
+
+                for (int i = 0; i < cities.size(); i++) {
+                    String item = cities.get(i).getName();
+                    items.add(item);
+                }
+
+                ArrayAdapter spinnerAdapter = new ArrayAdapter<>(activity, R.layout.spinner_item, items);
+                spinnerAdapter.setDropDownViewResource(R.layout.spinner_item);
+
+                spinnerCities.setAdapter(spinnerAdapter);
+                spinnerCities.setOnItemSelectedListener(this);
+            } else {
+                Toast.makeText(activity, message, Toast.LENGTH_SHORT).show();
+            }
+        }
+
+        @Override
+        protected void onPostExecuteGetGovs(ActionType actionType, boolean success, String message, ArrayList<BaseModel> govs) {
+            this.govs = govs;
+            activity.isLoading(false);
+            if (success) {
+                ArrayList<String> items = new ArrayList<>();
+
+                for (int i = 0; i < govs.size(); i++) {
+                    String item = govs.get(i).getName();
+                    items.add(item);
+                }
+
+                ArrayAdapter spinnerAdapter = new ArrayAdapter<>(activity, R.layout.spinner_item, items);
+                spinnerAdapter.setDropDownViewResource(R.layout.spinner_item);
+
+                spinnerGovs.setAdapter(spinnerAdapter);
+                spinnerGovs.setOnItemSelectedListener(this);
+            } else {
+                Toast.makeText(activity, message, Toast.LENGTH_SHORT).show();
+            }
+        }
+
+        @Override
+        public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+            if (view == spinnerCities) {
+                cityId = String.valueOf(cities.get(i).getId());
+            } else {
+                govId = String.valueOf(govs.get(i).getId());
+            }
+        }
+
+        @Override
+        public void onNothingSelected(AdapterView<?> adapterView) {
+
         }
     }
 }

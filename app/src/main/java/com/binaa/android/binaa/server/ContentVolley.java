@@ -7,8 +7,9 @@ import com.binaa.android.binaa.models.BaseModel;
 import com.binaa.android.binaa.models.Car;
 import com.binaa.android.binaa.models.Contact;
 import com.binaa.android.binaa.models.Hotel;
-import com.binaa.android.binaa.models.Offer;
+import com.binaa.android.binaa.models.HotelOffer;
 import com.binaa.android.binaa.models.Property;
+import com.binaa.android.binaa.models.PropertyOffer;
 import com.binaa.android.binaa.models.Service;
 
 import org.json.JSONArray;
@@ -38,14 +39,14 @@ public abstract class ContentVolley extends BaseVolley {
         requestAction(Request.Method.POST, url + "apartments", false);
     }
 
-    public void getHotels(String priceFrom, String priceTo, String govId, String cityId, String numberOfBedrooms) {
+    public void getHotels(String priceFrom, String priceTo, String govId, String cityId) {
         actionType = ActionType.GetHotels;
         params = new HashMap<>();
         params.put("price_from", priceFrom);
         params.put("price_to", priceTo);
         params.put("governorate_id", govId);
         params.put("city_id", cityId);
-        params.put("number_of_bedrooms", numberOfBedrooms);
+        params.put("number_of_bedrooms", "");
 
         requestAction(Request.Method.POST, url + "hotels", false);
     }
@@ -55,9 +56,14 @@ public abstract class ContentVolley extends BaseVolley {
         requestAction(Request.Method.GET, url + "all/cities", false);
     }
 
-    public void getOffers() {
-        actionType = ActionType.getOffers;
-        requestAction(Request.Method.GET, url + "offers", false);
+    public void getHotelOffers() {
+        actionType = ActionType.getHotelOffers;
+        requestAction(Request.Method.GET, url + "all/offers", false);
+    }
+
+    public void getPropertyOffers() {
+        actionType = ActionType.getPropertyOffers;
+        requestAction(Request.Method.GET, url + "all/offers", false);
     }
 
     public void getGovs() {
@@ -367,14 +373,23 @@ public abstract class ContentVolley extends BaseVolley {
                 }
                 onPostExecuteGetGovs(action, success, message, govs);
                 break;
-            case getOffers:
-                dataArray = jsonObject.getJSONArray("data");
-                ArrayList<Offer> offers = new ArrayList<>();
+            case getHotelOffers:
+                dataArray = jsonObject.getJSONArray("hotelOffers");
+                ArrayList<HotelOffer> hotelOffers = new ArrayList<>();
                 for (int i = 0; i < dataArray.length(); i++) {
-                    Offer offer = new Offer(dataArray.getJSONObject(i));
-                    offers.add(offer);
+                    HotelOffer hotelOffer = new HotelOffer(dataArray.getJSONObject(i));
+                    hotelOffers.add(hotelOffer);
                 }
-                onPostExecuteOffers(action, success, message, offers);
+                onPostExecuteHotelOffers(action, success, message, hotelOffers);
+                break;
+            case getPropertyOffers:
+                dataArray = jsonObject.getJSONArray("apartmentOffers");
+                ArrayList<PropertyOffer> propertyOffers = new ArrayList<>();
+                for (int i = 0; i < dataArray.length(); i++) {
+                    PropertyOffer propertyOffer = new PropertyOffer(dataArray.getJSONObject(i));
+                    propertyOffers.add(propertyOffer);
+                }
+                onPostExecutePropertyOffers(action, success, message, propertyOffers);
                 break;
             case addRegistration:
             case bookCar:
@@ -432,8 +447,11 @@ public abstract class ContentVolley extends BaseVolley {
             case getCities:
                 onPostExecuteGetCities(action, success, message, null);
                 break;
-            case getOffers:
-                onPostExecuteOffers(action, success, message, null);
+            case getHotelOffers:
+                onPostExecuteHotelOffers(action, success, message, null);
+                break;
+            case getPropertyOffers:
+                onPostExecutePropertyOffers(action, success, message, null);
                 break;
             case addRegistration:
             case bookCar:
@@ -483,13 +501,16 @@ public abstract class ContentVolley extends BaseVolley {
     protected void onPostExecuteGetGovs(ActionType actionType, boolean success, String message, ArrayList<BaseModel> govs) {
     }
 
-    protected void onPostExecuteOffers(ActionType actionType, boolean success, String message, ArrayList<Offer> offers) {
+    protected void onPostExecutePropertyOffers(ActionType actionType, boolean success, String message, ArrayList<PropertyOffer> propertyOffers) {
+    }
+
+    protected void onPostExecuteHotelOffers(ActionType actionType, boolean success, String message, ArrayList<HotelOffer> hotelOffers) {
     }
 
     public enum ActionType implements BaseVolley.ActionType {
         GetApartments, GetPropertyDetails, GetHotels, GetHotelDetails,
         GetCars, GetCarDetails, GetServices, GetServiceDetails, GetRelatedApartment,
         GetRelatedHotels, searchHotels, searchProperties, getContacts, about, addRegistration,
-        searchCars, bookCar, bookHotel, bookApartment, getCities, getGovs, getOffers
+        searchCars, bookCar, bookHotel, bookApartment, getCities, getGovs, getHotelOffers, getPropertyOffers
     }
 }

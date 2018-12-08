@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.annotation.RequiresApi;
 import android.support.v4.view.PagerAdapter;
@@ -191,11 +192,11 @@ public class DetailsActivity extends AppCompatActivity {
 
         String link;
 
-        public Listeners(String link) {
+        Listeners(String link) {
             this.link = link;
         }
 
-        public Listeners() {
+        Listeners() {
         }
 
         @RequiresApi(api = Build.VERSION_CODES.KITKAT)
@@ -255,14 +256,15 @@ public class DetailsActivity extends AppCompatActivity {
 
         private LayoutInflater inflater;
 
-        public RelatedAdapter(ArrayList<Property> properties) {
+        private RelatedAdapter(ArrayList<Property> properties) {
 
             inflater = getLayoutInflater();
             this.properties = properties;
         }
 
+        @NonNull
         @Override
-        public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup viewGroup, int viewType) {
+        public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int viewType) {
             View view;
             RecyclerView.ViewHolder holder;
 
@@ -274,7 +276,7 @@ public class DetailsActivity extends AppCompatActivity {
         }
 
         @Override
-        public void onBindViewHolder(RecyclerView.ViewHolder viewHolder, int position) {
+        public void onBindViewHolder(@NonNull RecyclerView.ViewHolder viewHolder, int position) {
 
             StaggeredGridLayoutManager.LayoutParams layoutParams = (StaggeredGridLayoutManager.LayoutParams) viewHolder.itemView.getLayoutParams();
             layoutParams.setFullSpan(true);
@@ -300,7 +302,7 @@ public class DetailsActivity extends AppCompatActivity {
 
             Property property;
 
-            public ItemHolder(View itemView) {
+            private ItemHolder(View itemView) {
                 super(itemView);
 
                 imageViewCover = itemView.findViewById(R.id.imageViewCover);
@@ -353,14 +355,15 @@ public class DetailsActivity extends AppCompatActivity {
 
         private LayoutInflater inflater;
 
-        public RelatedHotelsAdapter(ArrayList<Hotel> hotels) {
+        private RelatedHotelsAdapter(ArrayList<Hotel> hotels) {
 
             inflater = getLayoutInflater();
             this.hotels = hotels;
         }
 
+        @NonNull
         @Override
-        public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup viewGroup, int viewType) {
+        public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int viewType) {
             View view;
             RecyclerView.ViewHolder holder;
 
@@ -372,7 +375,7 @@ public class DetailsActivity extends AppCompatActivity {
         }
 
         @Override
-        public void onBindViewHolder(RecyclerView.ViewHolder viewHolder, int position) {
+        public void onBindViewHolder(@NonNull RecyclerView.ViewHolder viewHolder, int position) {
 
             StaggeredGridLayoutManager.LayoutParams layoutParams = (StaggeredGridLayoutManager.LayoutParams) viewHolder.itemView.getLayoutParams();
             layoutParams.setFullSpan(true);
@@ -398,7 +401,7 @@ public class DetailsActivity extends AppCompatActivity {
 
             Hotel hotel;
 
-            public ItemHolder(View itemView) {
+            private ItemHolder(View itemView) {
                 super(itemView);
 
                 imageViewCover = itemView.findViewById(R.id.imageViewCover);
@@ -450,7 +453,7 @@ public class DetailsActivity extends AppCompatActivity {
         private LayoutInflater inflater;
         private ArrayList<Image> images;
 
-        public PageAdapter(ArrayList<Image> images) {
+        private PageAdapter(ArrayList<Image> images) {
             this.inflater = getLayoutInflater();
             this.images = images;
         }
@@ -466,17 +469,18 @@ public class DetailsActivity extends AppCompatActivity {
         }
 
         @Override
-        public boolean isViewFromObject(View view, Object object) {
+        public boolean isViewFromObject(@NonNull View view, @NonNull Object object) {
             return view == object;
         }
 
         @Override
-        public void destroyItem(ViewGroup container, int position, Object object) {
+        public void destroyItem(@NonNull ViewGroup container, int position, @NonNull Object object) {
             container.removeView((View) object);
         }
 
+        @NonNull
         @Override
-        public Object instantiateItem(ViewGroup container, final int position) {
+        public Object instantiateItem(@NonNull ViewGroup container, final int position) {
 
             View itemView = inflater.inflate(R.layout.header_item, container, false);
 
@@ -619,10 +623,6 @@ public class DetailsActivity extends AppCompatActivity {
 
                 textViewPrice.setText(String.format("%s - %s %s", hotel.getPrice(), hotel.getPriceMonth(), getResources().getString(R.string.egp)));
                 textViewCode.setText(String.format("%s %s", getResources().getString(R.string.property_code), hotel.getCode()));
-                textViewArea.setText(String.format("%s%s%s", getString(R.string.area), hotel.getArea(), getString(R.string.m_)));
-                textViewBedrooms.setText(String.format("%s %s", getString(R.string.bedrooms), hotel.getBedrooms()));
-                textViewBathrooms.setText(String.format("%s %s", getString(R.string.bathrooms), hotel.getBathrooms()));
-                relativeLayoutDetails.setVisibility(View.VISIBLE);
 
                 imageViewInstagram.setOnClickListener(new Listeners(hotel.getInstagram()));
                 imageViewFacebook.setOnClickListener(new Listeners(hotel.getFacebook()));

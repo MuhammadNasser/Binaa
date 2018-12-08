@@ -29,6 +29,7 @@ import com.binaa.android.binaa.fragments.CarsFragment;
 import com.binaa.android.binaa.fragments.ContactUsFragment;
 import com.binaa.android.binaa.fragments.HotelsFragment;
 import com.binaa.android.binaa.fragments.NavigationDrawerFragment;
+import com.binaa.android.binaa.fragments.OffersFragment;
 import com.binaa.android.binaa.fragments.PrivacyFragment;
 import com.binaa.android.binaa.fragments.PropertiesFragment;
 import com.binaa.android.binaa.fragments.ServicesFragment;
@@ -255,24 +256,30 @@ public class MainActivity extends AppCompatActivity implements TabLayout.OnTabSe
                 fragmentTitle = getResources().getString(R.string.apartments);
                 break;
             case 2:
-                fragment = new ServicesFragment();
+                fragment = new OffersFragment();
                 tabLayout.setVisibility(View.GONE);
 
                 fragmentTitle = slideMenuItems[position - 1];
                 break;
             case 3:
-                fragment = new PrivacyFragment();
+                fragment = new ServicesFragment();
                 tabLayout.setVisibility(View.GONE);
 
                 fragmentTitle = slideMenuItems[position - 1];
                 break;
             case 4:
-                fragment = new AboutUsFragment();
+                fragment = new PrivacyFragment();
                 tabLayout.setVisibility(View.GONE);
 
                 fragmentTitle = slideMenuItems[position - 1];
                 break;
             case 5:
+                fragment = new AboutUsFragment();
+                tabLayout.setVisibility(View.GONE);
+
+                fragmentTitle = slideMenuItems[position - 1];
+                break;
+            case 6:
                 fragment = new ContactUsFragment();
                 tabLayout.setVisibility(View.GONE);
 
@@ -300,8 +307,7 @@ public class MainActivity extends AppCompatActivity implements TabLayout.OnTabSe
                     intent.putExtra(TYPE, DetailsActivity.DetailsType.Properties);
                     startActivity(intent);
                 } else if (currentFragment instanceof HotelsFragment) {
-                    intent.putExtra(TYPE, DetailsActivity.DetailsType.Hotels);
-                    startActivity(intent);
+                    ((HotelsFragment) currentFragment).relativeLayoutHeader.setVisibility(View.VISIBLE);
                 } else if (currentFragment instanceof CarsFragment) {
                     intent.putExtra(TYPE, DetailsActivity.DetailsType.Cars);
                     startActivity(intent);

@@ -19,7 +19,7 @@
     <string name="app_icon">app_icon</string>
     <string name="egp"> EGP</string>
     <string name="save_icon">Save Icon</string>
-    <string name="slogan">Booking apartments, hotels and cars Cairo</string>
+    <string name="slogan">Booking apartments, hotels and hotelOffers Cairo</string>
     <string name="related">Related: </string>
     <string name="en">En</string>
     <string name="ar">Ar</string>
@@ -65,11 +65,12 @@
     <string name="navigation_drawer_open">Car Reservation has been sent, Please check your email</string>
     <string name="navigation_drawer_close">Car Reservation has been sent, Please check your email</string>
     <string name="close">Close</string>
-    <string name="City">City</string>
-    <string name="state">State</string>
+    <string name="properties_offers">Properties Offers</string>
+    <string name="hotels_offers">Hotels Offers</string>
 
     <string-array name="slideMenuItems">
         <item>Home</item>
+        <item>Offers</item>
         <item>Services</item>
         <item>Privacy Policy</item>
         <item>About Us</item>

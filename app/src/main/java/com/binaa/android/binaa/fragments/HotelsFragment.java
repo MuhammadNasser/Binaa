@@ -1,6 +1,5 @@
 package com.binaa.android.binaa.fragments;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
@@ -48,10 +47,11 @@ public class HotelsFragment extends Fragment {
 
     RecyclerView recyclerView;
     RelativeLayout relativeLayoutComingSoon;
+    public RelativeLayout relativeLayoutHeader;
     Parcelable savedRecyclerLayoutState;
     Spinner spinnerCities;
     Spinner spinnerGovs;
-    EditText editTextBedrooms;
+    //    EditText editTextBedrooms;
     EditText editTextMinPrice;
     EditText editTextMaxPrice;
     Button buttonSearch;
@@ -69,7 +69,8 @@ public class HotelsFragment extends Fragment {
         recyclerView = view.findViewById(R.id.recycler);
         spinnerCities = view.findViewById(R.id.spinnerCities);
         spinnerGovs = view.findViewById(R.id.spinnerGovs);
-        editTextBedrooms = view.findViewById(R.id.editTextBedrooms);
+        relativeLayoutHeader = view.findViewById(R.id.relativeLayoutHeader);
+//        editTextBedrooms = view.findViewById(R.id.editTextBedrooms);
         editTextMinPrice = view.findViewById(R.id.editTextMinPrice);
         editTextMaxPrice = view.findViewById(R.id.editTextMaxPrice);
         buttonSearch = view.findViewById(R.id.buttonSearch);
@@ -82,11 +83,17 @@ public class HotelsFragment extends Fragment {
         recyclerView.setItemAnimator(new DefaultItemAnimator());
 
         final Content content = new Content();
-        content.getHotels("", "", "", "", "");
+        content.getHotels("", "", "", "");
         buttonSearch.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                content.getHotels(editTextMinPrice.getText().toString(), editTextMaxPrice.getText().toString(), govId, cityId, editTextBedrooms.getText().toString());
+                if (govId == null) {
+                    content.getHotels(editTextMinPrice.getText().toString(), editTextMaxPrice.getText().toString(), "", cityId);
+                } else if (cityId == null) {
+                    content.getHotels(editTextMinPrice.getText().toString(), editTextMaxPrice.getText().toString(), govId, "");
+                } else {
+                    content.getHotels(editTextMinPrice.getText().toString(), editTextMaxPrice.getText().toString(), govId, cityId);
+                }
             }
         });
 
@@ -126,9 +133,9 @@ public class HotelsFragment extends Fragment {
 
         private LayoutInflater inflater;
 
-        public HotelsAdapter(Activity activity, ArrayList<Hotel> hotels) {
+        public HotelsAdapter(ArrayList<Hotel> hotels) {
 
-            inflater = activity.getLayoutInflater();
+            inflater = getLayoutInflater();
             this.hotels = hotels;
         }
 
@@ -146,10 +153,9 @@ public class HotelsFragment extends Fragment {
 
         @Override
         public void onBindViewHolder(RecyclerView.ViewHolder viewHolder, int position) {
-
             StaggeredGridLayoutManager.LayoutParams layoutParams = (StaggeredGridLayoutManager.LayoutParams) viewHolder.itemView.getLayoutParams();
             layoutParams.setFullSpan(false);
-            layoutParams.height = (int) (recyclerView.getMeasuredHeight() * 0.75);
+            layoutParams.height = (int) (recyclerView.getMeasuredWidth() * 0.75);
 
             ItemHolder itemHolder = (ItemHolder) viewHolder;
             itemHolder.setDetails(hotels.get(position));
@@ -232,12 +238,14 @@ public class HotelsFragment extends Fragment {
         protected void onPostExecuteGetHotels(ActionType actionType, boolean success, String message, ArrayList<Hotel> hotels) {
             activity.isLoading(false);
             if (success) {
-                if (hotels.size() != 0) {
-                    recyclerView.setAdapter(new HotelsAdapter(activity, hotels));
+                if (hotels.size() > 0) {
+                    recyclerView.setAdapter(new HotelsAdapter(hotels));
                 } else {
                     relativeLayoutComingSoon.setVisibility(View.VISIBLE);
                     recyclerView.setVisibility(View.GONE);
                 }
+                relativeLayoutHeader.setVisibility(View.GONE);
+
             } else {
                 Toast.makeText(activity, message, Toast.LENGTH_SHORT).show();
             }

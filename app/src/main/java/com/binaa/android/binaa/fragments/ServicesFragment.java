@@ -4,9 +4,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.Handler;
 import android.support.v4.app.Fragment;
-import android.support.v4.view.ViewPager;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
@@ -21,15 +19,11 @@ import android.widget.Toast;
 import com.binaa.android.binaa.DetailsActivity;
 import com.binaa.android.binaa.MainActivity;
 import com.binaa.android.binaa.R;
-import com.binaa.android.binaa.models.Offer;
 import com.binaa.android.binaa.models.Service;
 import com.binaa.android.binaa.server.ContentVolley;
-import com.binaa.android.binaa.utils.ViewPagerAdapter;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
-import java.util.Timer;
-import java.util.TimerTask;
 
 import static com.binaa.android.binaa.DetailsActivity.ID_KEY;
 import static com.binaa.android.binaa.DetailsActivity.ITEM_TYPE;
@@ -44,11 +38,6 @@ public class ServicesFragment extends Fragment {
 
     RecyclerView recyclerView;
     private MainActivity activity;
-    private ViewPager pagerOffers;
-    final long DELAY_MS = 500;//delay in milliseconds before task is to be executed
-    final long PERIOD_MS = 3000; // time in milliseconds between successive task executions.
-    int currentPage = 0;
-    Timer timer;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -58,13 +47,9 @@ public class ServicesFragment extends Fragment {
         activity = (MainActivity) getActivity();
 
         recyclerView = view.findViewById(R.id.recycler);
-        pagerOffers = view.findViewById(R.id.pagerOffers);
-
 
         Content content = new Content();
         content.getServices();
-        Content content1 = new Content();
-        content1.getOffers();
 
         return view;
     }
@@ -191,39 +176,5 @@ public class ServicesFragment extends Fragment {
                 Toast.makeText(activity, message, Toast.LENGTH_SHORT).show();
             }
         }
-
-        @Override
-        protected void onPostExecuteOffers(ActionType actionType, boolean success, String message, final ArrayList<Offer> offers) {
-            activity.isLoading(false);
-            if (success) {
-                if (offers != null && offers.size() > 0) {
-                    pagerOffers.setVisibility(View.VISIBLE);
-                    pagerOffers.setAdapter(new ViewPagerAdapter(offers, activity));
-                    final Handler handler = new Handler();
-                    final Runnable Update = new Runnable() {
-                        public void run() {
-                            if (currentPage == offers.size() - 1) {
-                                currentPage = 0;
-                            }
-                            pagerOffers.setCurrentItem(currentPage++, true);
-                        }
-                    };
-
-                    timer = new Timer(); // This will create a new Thread
-                    timer.schedule(new TimerTask() { // task to be scheduled
-                        @Override
-                        public void run() {
-                            handler.post(Update);
-                        }
-                    }, DELAY_MS, PERIOD_MS);
-
-                } else {
-                    pagerOffers.setVisibility(View.GONE);
-                }
-            } else {
-                Toast.makeText(activity, message, Toast.LENGTH_SHORT).show();
-            }
-        }
-
     }
 }

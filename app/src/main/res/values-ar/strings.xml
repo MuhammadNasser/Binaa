@@ -64,13 +64,14 @@
     <string name="messageHotel">تم ارسال طلب حجز الفندق, برجاء التحقق من البريد</string>
     <string name="messageCar">تم ارسال طلب حجز السياره, برجاء التحقق من البريد</string>
     <string name="close">إغلاق</string>
-    <string name="City">المدينه</string>
-    <string name="state">المحافظه</string>
     <string name="navigation_drawer_open">Car Reservation has been sent, Please check your email</string>
     <string name="navigation_drawer_close">Car Reservation has been sent, Please check your email</string>
+    <string name="properties_offers">عروض الشقق</string>
+    <string name="hotels_offers">عروض الفنادق</string>
 
     <string-array name="slideMenuItems">
         <item>الرئيسية</item>
+        <item>العروض</item>
         <item>الخدمات</item>
         <item>سياسةالخصوصية</item>
         <item>من نحن</item>

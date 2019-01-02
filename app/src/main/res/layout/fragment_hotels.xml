@@ -73,7 +73,7 @@
             android:layout_below="@+id/linearLayout"
             android:layout_margin="5dp"
             android:background="@drawable/rect_white_blue_stroke"
-            android:hint="@string/min_price"
+            android:hint="@string/min_price_hotel"
             android:inputType="number"
             android:maxLines="1"
             android:padding="10dp"
@@ -93,7 +93,7 @@
             android:layout_margin="5dp"
             android:background="@drawable/rect_white_blue_stroke"
             android:drawablePadding="23dp"
-            android:hint="@string/max_price"
+            android:hint="@string/max_price_hotel"
             android:inputType="number"
             android:maxLines="1"
             android:padding="10dp"
@@ -101,7 +101,7 @@
             android:textCursorDrawable="@drawable/color_cursor"
             android:textSize="@dimen/textSizeSmall" />
 
-        <com.binaa.android.binaa.views.ButtonRobotoRegular
+        <com.binaa.company.views.ButtonRobotoRegular
             android:id="@+id/buttonSearch"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -140,7 +140,7 @@
             android:padding="10dp"
             android:src="@drawable/coming_soon" />
 
-        <com.binaa.android.binaa.views.TextViewRobotoBold
+        <com.binaa.company.views.TextViewRobotoBold
             android:id="@+id/textView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

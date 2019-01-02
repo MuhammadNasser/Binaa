@@ -28,7 +28,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="200dp" />
 
-            <com.binaa.android.binaa.views.PagerSlidingTabStrip
+            <com.binaa.company.views.PagerSlidingTabStrip
                 android:id="@+id/pagerSlidingTabStrip"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -39,7 +39,7 @@
                 android:minWidth="30dp"
                 android:tag="sw320dp" />
 
-            <com.binaa.android.binaa.views.TextViewRobotoRegular
+            <com.binaa.company.views.TextViewRobotoRegular
                 android:id="@+id/textViewPrice"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -48,7 +48,7 @@
                 android:layout_marginTop="20dp"
                 android:background="@color/blue60"
                 android:gravity="center"
-                android:lines="1"
+                android:lines="2"
                 android:paddingBottom="10dp"
                 android:paddingEnd="15dp"
                 android:paddingLeft="20dp"
@@ -60,7 +60,7 @@
                 tools:ignore="RelativeOverlap"
                 tools:text="@string/price" />
 
-            <com.binaa.android.binaa.views.TextViewRobotoRegular
+            <com.binaa.company.views.TextViewRobotoRegular
                 android:id="@+id/textViewCode"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -116,7 +116,7 @@
                             android:contentDescription="@string/app_name"
                             android:src="@drawable/ic_area" />
 
-                        <com.binaa.android.binaa.views.TextViewRobotoLight
+                        <com.binaa.company.views.TextViewRobotoLight
                             android:id="@+id/textViewArea"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
@@ -138,7 +138,7 @@
                             android:contentDescription="@string/app_name"
                             android:src="@drawable/ic_bedrooms" />
 
-                        <com.binaa.android.binaa.views.TextViewRobotoLight
+                        <com.binaa.company.views.TextViewRobotoLight
                             android:id="@+id/textViewBedrooms"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
@@ -162,7 +162,7 @@
                             android:contentDescription="@string/app_name"
                             android:src="@drawable/ic_bathrooms" />
 
-                        <com.binaa.android.binaa.views.TextViewRobotoLight
+                        <com.binaa.company.views.TextViewRobotoLight
                             android:id="@+id/textViewBathrooms"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
@@ -174,7 +174,7 @@
 
                 </RelativeLayout>
 
-                <com.binaa.android.binaa.views.TextViewRobotoLight
+                <com.binaa.company.views.TextViewRobotoLight
                     android:id="@+id/textViewDescription"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -204,7 +204,7 @@
                 android:layout_marginTop="20dp"
                 android:background="@color/white">
 
-                <com.binaa.android.binaa.views.TextViewRobotoRegular
+                <com.binaa.company.views.TextViewRobotoRegular
                     android:id="@+id/textViewTitle2"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -254,7 +254,7 @@
 
                 </LinearLayout>
 
-                <com.binaa.android.binaa.views.TextViewRobotoRegular
+                <com.binaa.company.views.TextViewRobotoRegular
                     android:id="@+id/textView"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -273,7 +273,7 @@
                     android:layout_below="@+id/textView"
                     android:layout_centerHorizontal="true">
 
-                    <com.binaa.android.binaa.views.ButtonRobotoRegular
+                    <com.binaa.company.views.ButtonRobotoRegular
                         android:id="@+id/buttonCall"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -295,7 +295,7 @@
                         android:layout_height="wrap_content"
                         android:layout_centerInParent="true" />
 
-                    <com.binaa.android.binaa.views.ButtonRobotoRegular
+                    <com.binaa.company.views.ButtonRobotoRegular
                         android:id="@+id/buttonReserve"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -323,7 +323,7 @@
                 android:background="@color/white"
                 android:visibility="gone">
 
-                <com.binaa.android.binaa.views.TextViewRobotoRegular
+                <com.binaa.company.views.TextViewRobotoRegular
                     android:id="@+id/textViewTitle3"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"

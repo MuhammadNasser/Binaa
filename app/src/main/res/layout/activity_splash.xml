@@ -13,7 +13,7 @@
         android:contentDescription="@string/app_icon"
         android:src="@drawable/binaa_logo" />
 
-    <com.binaa.android.binaa.views.TextViewRobotoBold
+    <com.binaa.company.views.TextViewRobotoBold
         android:id="@+id/textViewActivityTitle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

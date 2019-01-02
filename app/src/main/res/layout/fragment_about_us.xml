@@ -25,7 +25,7 @@
             android:contentDescription="@string/app_icon"
             android:src="@drawable/binaa_logo" />
 
-        <com.binaa.android.binaa.views.TextViewRobotoRegular
+        <com.binaa.company.views.TextViewRobotoRegular
             android:id="@+id/textView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -35,7 +35,7 @@
             android:text="@string/who_we_are"
             android:textAppearance="?android:attr/textAppearanceLarge" />
 
-        <com.binaa.android.binaa.views.TextViewRobotoRegular
+        <com.binaa.company.views.TextViewRobotoRegular
             android:id="@+id/textViewAbout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

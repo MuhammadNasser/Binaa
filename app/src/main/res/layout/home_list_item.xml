@@ -25,7 +25,7 @@
             android:contentDescription="@null"
             android:scaleType="centerCrop" />
 
-        <com.binaa.android.binaa.views.TextViewRobotoRegular
+        <com.binaa.company.views.TextViewRobotoRegular
             android:id="@+id/textViewPrice"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -36,7 +36,7 @@
             android:layout_marginTop="40dp"
             android:background="@color/blue60"
             android:gravity="center"
-            android:lines="1"
+            android:lines="2"
             android:paddingBottom="10dp"
             android:paddingEnd="15dp"
             android:paddingLeft="20dp"
@@ -48,7 +48,7 @@
             android:textSize="@dimen/textSizeXSmall"
             tools:ignore="RelativeOverlap" />
 
-        <com.binaa.android.binaa.views.TextViewRobotoRegular
+        <com.binaa.company.views.TextViewRobotoRegular
             android:id="@+id/textViewCode"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -83,7 +83,7 @@
             android:background="@color/black60"
             android:padding="5dp">
 
-            <com.binaa.android.binaa.views.TextViewRobotoRegular
+            <com.binaa.company.views.TextViewRobotoRegular
                 android:id="@+id/textViewDescription"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

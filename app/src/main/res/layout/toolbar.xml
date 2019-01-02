@@ -6,7 +6,7 @@
     android:gravity="center_horizontal"
     android:theme="@style/ThemeOverlay.AppCompat.Dark">
 
-    <com.binaa.android.binaa.views.TextViewRobotoLight
+    <com.binaa.company.views.TextViewRobotoLight
         android:id="@+id/title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

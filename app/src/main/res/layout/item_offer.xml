@@ -13,7 +13,7 @@
         android:contentDescription="@null"
         android:scaleType="centerCrop" />
 
-    <com.binaa.android.binaa.views.TextViewRobotoBold
+    <com.binaa.company.views.TextViewRobotoBold
         android:id="@+id/textViewHotelName"
         android:layout_width="200dp"
         android:layout_height="wrap_content"
@@ -45,7 +45,7 @@
         android:background="@color/white"
         android:padding="10dp">
 
-        <com.binaa.android.binaa.views.TextViewRobotoBold
+        <com.binaa.company.views.TextViewRobotoBold
             android:id="@+id/textViewDescription"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

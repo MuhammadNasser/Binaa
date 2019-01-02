@@ -28,7 +28,7 @@
             android:orientation="vertical"
             android:padding="10dp">
 
-            <com.binaa.android.binaa.views.TextViewRobotoRegular
+            <com.binaa.company.views.TextViewRobotoRegular
                 android:id="@+id/textViewTitle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -214,7 +214,7 @@
 
             </LinearLayout>
 
-            <com.binaa.android.binaa.views.ButtonRobotoRegular
+            <com.binaa.company.views.ButtonRobotoRegular
                 android:id="@+id/buttonReserve"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"

@@ -33,6 +33,8 @@
     <string name="m_">م²</string>
     <string name="min_price">أقل سعر</string>
     <string name="max_price">أكبر سعر</string>
+    <string name="min_price_hotel">أقل سعر /دولار أمريكي</string>
+    <string name="max_price_hotel">أكبر سعر /دولار أمريكي</string>
     <string name="search">بحث</string>
     <string name="no_result">لا يوجد نتائج لهذه البيانات</string>
     <string name="coming_soon">قريبا…</string>
@@ -68,6 +70,8 @@
     <string name="navigation_drawer_close">Car Reservation has been sent, Please check your email</string>
     <string name="properties_offers">عروض الشقق</string>
     <string name="hotels_offers">عروض الفنادق</string>
+    <string name="dolar">$</string>
+    <string name="including">\n شاملة الانتقالات</string>
 
     <string-array name="slideMenuItems">
         <item>الرئيسية</item>

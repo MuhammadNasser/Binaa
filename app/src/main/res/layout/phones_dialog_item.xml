@@ -5,7 +5,7 @@
     android:orientation="vertical"
     android:tag="layout">
 
-    <com.binaa.android.binaa.views.TextViewRobotoRegular
+    <com.binaa.company.views.TextViewRobotoRegular
         android:id="@+id/textView1"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

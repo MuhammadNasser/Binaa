@@ -22,7 +22,7 @@
         android:scaleType="centerCrop"
         android:src="@drawable/binaa_logo" />
 
-    <com.binaa.android.binaa.views.TextViewRobotoBold
+    <com.binaa.company.views.TextViewRobotoBold
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerVertical="true"

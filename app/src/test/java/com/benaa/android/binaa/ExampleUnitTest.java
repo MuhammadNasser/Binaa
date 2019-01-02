@@ -1,4 +1,4 @@
-package com.binaa.android.binaa;
+package com.binaa.company;
 
 import org.junit.Test;
 

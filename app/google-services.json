@@ -8,9 +8,9 @@
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:453034853690:android:0ab137a0ce44331d",
+        "mobilesdk_app_id": "1:453034853690:android:d20eafe8379e7b22",
         "android_client_info": {
-          "package_name": "com.binaa.android.binaa"
+          "package_name": "com.binaa.company"
         }
       },
       "oauth_client": [

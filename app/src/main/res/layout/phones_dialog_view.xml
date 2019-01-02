@@ -19,7 +19,7 @@
         android:orientation="vertical"
         android:padding="10dp">
 
-        <com.binaa.android.binaa.views.TextViewRobotoBold
+        <com.binaa.company.views.TextViewRobotoBold
             android:id="@+id/textView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

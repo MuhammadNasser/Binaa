@@ -11,7 +11,7 @@
     android:tag="layout">
 
 
-    <com.binaa.android.binaa.views.TextViewRobotoLight
+    <com.binaa.company.views.TextViewRobotoLight
         android:id="@+id/textViewActivityTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -20,7 +20,7 @@
         android:textSize="@dimen/textSizeNormal"
         tools:ignore="RelativeOverlap" />
 
-    <com.binaa.android.binaa.views.TextViewRobotoBold
+    <com.binaa.company.views.TextViewRobotoBold
         android:id="@+id/textViewLanguage"
         android:layout_width="wrap_content"
         android:layout_height="40dp"

@@ -19,7 +19,7 @@
     <string name="app_icon">app_icon</string>
     <string name="egp"> EGP</string>
     <string name="save_icon">Save Icon</string>
-    <string name="slogan">Booking apartments, hotels and hotelOffers Cairo</string>
+    <string name="slogan">Booking apartments,cars and hotels Cairo</string>
     <string name="related">Related: </string>
     <string name="en">En</string>
     <string name="ar">Ar</string>
@@ -31,6 +31,8 @@
     <string name="m_">m²</string>
     <string name="min_price">Minimum Price</string>
     <string name="max_price">Maxmum Price</string>
+    <string name="min_price_hotel">Minimum Price \ USD</string>
+    <string name="max_price_hotel">Maxmum Price \ USD</string>
     <string name="search">Search</string>
     <string name="no_result">No results for this data</string>
     <string name="coming_soon">Coming Soon…</string>
@@ -67,6 +69,8 @@
     <string name="close">Close</string>
     <string name="properties_offers">Properties Offers</string>
     <string name="hotels_offers">Hotels Offers</string>
+    <string name="dolar">$</string>
+    <string name="including">\n Including transfers</string>
 
     <string-array name="slideMenuItems">
         <item>Home</item>
